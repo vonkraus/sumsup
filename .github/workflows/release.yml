@@ -8,11 +8,15 @@ on:
 jobs:
   desktop:
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: macos-latest
-            target: universal-apple-darwin
-            name: macOS
+            target: aarch64-apple-darwin
+            name: macOS-arm64
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            name: macOS-x64
           - os: windows-latest
             target: x86_64-pc-windows-msvc
             name: Windows
