@@ -1,7 +1,7 @@
 {
   "$schema": "../../../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Sums Up",
-  "version": "0.1.0",
+  "version": "0.2.5",
   "identifier": "com.vonkraus.sumsup",
   "build": {
     "frontendDist": "../../../dist/apps/web",
