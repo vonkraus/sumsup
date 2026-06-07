@@ -1,8 +1,8 @@
 {
   "$schema": "../../../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "SumsUp!",
+  "productName": "Sums Up",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.vonkraus.sumsup",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:3000",
@@ -12,11 +12,14 @@
   "app": {
     "windows": [
       {
-        "title": "SumsUp!",
-        "width": 800,
-        "height": 600,
+        "title": "Sums Up",
+        "width": 1200,
+        "height": 800,
+        "minWidth": 375,
+        "minHeight": 600,
         "resizable": true,
-        "fullscreen": false
+        "fullscreen": false,
+        "center": true
       }
     ],
     "security": {
@@ -33,6 +36,18 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
+    "externalBin": [
+      "binaries/pocketbase"
+    ],
+    "macOS": {
+      "minimumSystemVersion": "10.15",
+      "universalArch": true
+    },
+    "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper"
+      }
+    },
     "android": {
       "debugApplicationIdSuffix": ".debug"
     }
