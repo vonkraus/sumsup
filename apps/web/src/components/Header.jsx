@@ -19,7 +19,7 @@ export function Header() {
           >
             <div className="bg-primary/10 p-2 rounded-xl flex items-center justify-center transition-transform hover:scale-105">
               <img 
-                src="https://horizons-cdn.hostinger.com/a59b9d69-2102-4bc6-8e97-afe4424699ca/77aa4d3482ebf4de044dc68d9ea99aa1.png" 
+                src="/sumsup-icon.png" 
                 alt="Calculator Logo" 
                 className="h-8 w-8 md:h-9 md:w-9 object-contain drop-shadow-sm"
               />

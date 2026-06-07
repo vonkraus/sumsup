@@ -22,7 +22,7 @@ function SiteFooter() {
           <div className="col-span-1 md:col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-4">
               <img 
-                src="https://horizons-cdn.hostinger.com/a59b9d69-2102-4bc6-8e97-afe4424699ca/77aa4d3482ebf4de044dc68d9ea99aa1.png" 
+                src="/sumsup-icon.png" 
                 alt="Sums Up Logo" 
                 className="h-6 w-6 object-contain"
               />
