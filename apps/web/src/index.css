@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "DM Sans", sans-serif;
+  overflow-x: clip;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@layer base {
+  :root {
+    /* Luxury Gold & Charcoal Theme - Light Mode */
+    --background: 0 0% 98%;
+    --foreground: 0 0% 10%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    
+    /* Primary: Luxury Gold */
+    --primary: 43 100% 53%;
+    --primary-foreground: 0 0% 10%;
+    
+    /* Secondary: Dark Charcoal */
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 43 100% 53%;
+    
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 40%;
+    
+    /* Accent: Luxury Gold */
+    --accent: 43 100% 53%;
+    --accent-foreground: 0 0% 10%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 0 0% 85%;
+    --input: 0 0% 85%;
+    --ring: 43 100% 53%;
+    
+    --radius: 0.75rem;
+
+    /* Income Breakdown Custom Properties */
+    --income-gross: 0 0% 40%;
+    --income-tax: 0 84% 60%;
+    --income-takehome: 43 100% 53%;
+  }
+
+  .dark {
+    /* Luxury Gold & Charcoal Theme - Dark Mode */
+    --background: 0 0% 10%;
+    --foreground: 0 0% 95%;
+    
+    --card: 0 0% 14%;
+    --card-foreground: 0 0% 95%;
+    
+    --popover: 0 0% 14%;
+    --popover-foreground: 0 0% 95%;
+    
+    /* Primary: Luxury Gold */
+    --primary: 43 100% 53%;
+    --primary-foreground: 0 0% 10%;
+    
+    /* Secondary: Dark Charcoal (Lighter shade for contrast in dark mode) */
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 43 100% 53%;
+    
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 65%;
+    
+    /* Accent: Luxury Gold */
+    --accent: 43 100% 53%;
+    --accent-foreground: 0 0% 10%;
+    
+    --destructive: 0 62% 40%;
+    --destructive-foreground: 0 0% 95%;
+    
+    --border: 0 0% 25%;
+    --input: 0 0% 25%;
+    --ring: 43 100% 53%;
+
+    /* Income Breakdown Custom Properties */
+    --income-gross: 0 0% 70%;
+    --income-tax: 0 62% 50%;
+    --income-takehome: 43 100% 53%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Form Base Enhancements */
+  input, textarea {
+    @apply transition-colors duration-200 placeholder:text-muted-foreground;
+  }
+  
+  input:focus-visible, textarea:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  .transition-smooth {
+    transition: all 0.3s ease;
+  }
+
+  .budget-features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 42rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .budget-features-list li {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.75rem;
+    font-size: 1.125rem;
+    line-height: 1.625;
+  }
+
+  .budget-features-list li::before {
+    content: "◆";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: hsl(var(--primary));
+    font-weight: 600;
+    flex-shrink: 0;
+    font-size: 0.625rem;
+    min-width: 1rem;
+    height: 1.625rem;
+    margin-top: 0.125rem;
+  }
+
+  /* Floating Summary Panel Styles */
+  .floating-summary-panel {
+    position: fixed;
+    top: 6rem;
+    right: 1.5rem;
+    width: 16rem;
+    z-index: 40;
+    transition: all 0.3s ease;
+  }
+
+  /* Hide on mobile and small tablets */
+  @media (max-width: 1023px) {
+    .floating-summary-panel {
+      display: none !important;
+    }
+  }
+
+  /* Center alignment offset for large screens to prevent overlap */
+  @media (min-width: 1280px) {
+    .floating-summary-panel {
+      right: calc((100vw - 80rem) / 2 + 1.5rem);
+    }
+  }
+
+  /* Spreadsheet Name Input Styles */
+  .spreadsheet-name-input {
+    font-size: 1.25rem;
+    font-weight: 600;
+    background: transparent;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    color: hsl(var(--foreground));
+  }
+
+  .spreadsheet-name-input:hover {
+    border-color: hsl(var(--border));
+  }
+
+  .spreadsheet-name-input:focus {
+    border-color: hsl(var(--ring));
+    background: hsl(var(--background));
+    outline: none;
+    box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+  }
+}
