@@ -12,6 +12,7 @@ import HomePage from '@/pages/HomePage.jsx';
 import { LanguageProvider } from '@/contexts/LanguageContext.jsx';
 import { Header } from '@/components/Header.jsx';
 import { CookieConsent } from '@/components/CookieConsent.jsx';
+import { isTauri } from '@/lib/platform.js';
 
 function SiteFooter() {
   return (
@@ -48,7 +49,7 @@ function SiteFooter() {
               <li><Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link></li>
               <li><Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link></li>
               <li><Link to="/contact" className="hover:text-foreground transition-colors">Contact Us</Link></li>
-              <li><a href="https://support.google.com/adsense/answer/48182" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">This site uses Google AdSense</a></li>
+              {!isTauri() && <li><a href="https://support.google.com/adsense/answer/48182" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">This site uses Google AdSense</a></li>}
             </ul>
           </div>
         </div>

@@ -5,9 +5,6 @@ on:
     tags:
       - 'v*'
 
-env:
-  POCKETBASE_VERSION: "0.22.21"
-
 jobs:
   desktop:
     strategy:
@@ -16,18 +13,12 @@ jobs:
         include:
           - os: macos-latest
             target: aarch64-apple-darwin
-            pb_os: darwin_arm64
-            pb_ext: ""
             name: macOS-arm64
           - os: macos-latest
             target: x86_64-apple-darwin
-            pb_os: darwin_amd64
-            pb_ext: ""
             name: macOS-x64
           - os: windows-latest
             target: x86_64-pc-windows-msvc
-            pb_os: windows_amd64
-            pb_ext: ".exe"
             name: Windows
 
     runs-on: ${{ matrix.os }}
@@ -52,17 +43,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Download PocketBase sidecar
-        shell: bash
-        run: |
-          mkdir -p apps/web/src-tauri/binaries
-          URL="https://github.com/pocketbase/pocketbase/releases/download/v${POCKETBASE_VERSION}/pocketbase_${POCKETBASE_VERSION}_${{ matrix.pb_os }}.zip"
-          echo "Downloading $URL"
-          curl -L -o pb.zip "$URL"
-          unzip -o pb.zip -d pb_extract
-          cp "pb_extract/pocketbase${{ matrix.pb_ext }}" "apps/web/src-tauri/binaries/pocketbase-${{ matrix.target }}${{ matrix.pb_ext }}"
-          chmod +x "apps/web/src-tauri/binaries/pocketbase-${{ matrix.target }}${{ matrix.pb_ext }}" || true
 
       - name: Build web app
         run: npm run build --prefix apps/web

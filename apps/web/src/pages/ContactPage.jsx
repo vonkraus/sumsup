@@ -3,13 +3,14 @@ import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { Mail, Send, CheckCircle2, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
-import pb from '@/lib/pocketbaseClient.js';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useCanonicalTag } from '@/hooks/useCanonicalTag.js';
+
+const WEB3FORMS_ACCESS_KEY = '36844f4a-c20f-43c1-8403-36b48d71761b';
 
 export default function ContactPage() {
   useCanonicalTag();
@@ -19,7 +20,7 @@ export default function ContactPage() {
     subject: '',
     message: ''
   });
-  
+
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -34,7 +35,7 @@ export default function ContactPage() {
     if (!formData.subject.trim()) newErrors.subject = 'Subject is required';
     if (!formData.message.trim()) newErrors.message = 'Message is required';
     else if (formData.message.trim().length < 10) newErrors.message = 'Message must be at least 10 characters';
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -42,7 +43,6 @@ export default function ContactPage() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    // Clear error when typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -50,7 +50,7 @@ export default function ContactPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       toast.error('Please fix the errors in the form before submitting.', {
         icon: <AlertCircle className="h-4 w-4" />
@@ -59,20 +59,34 @@ export default function ContactPage() {
     }
 
     setIsSubmitting(true);
-    
+
     try {
-      await pb.collection('contact_submissions').create({
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        subject: formData.subject.trim(),
-        message: formData.message.trim()
-      }, { $autoCancel: false });
-      
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          subject: formData.subject.trim(),
+          message: formData.message.trim(),
+          from_name: 'Sums Up Contact Form'
+        })
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.message || 'Submission failed');
+      }
+
       toast.success('Message sent successfully! We will get back to you soon.', {
         icon: <CheckCircle2 className="h-4 w-4" />
       });
-      
-      // Reset form
+
       setFormData({
         name: '',
         email: '',
@@ -94,16 +108,16 @@ export default function ContactPage() {
     <>
       <Helmet>
         <title>{`Contact Us - Sums Up`}</title>
-        <meta 
-          name="description" 
-          content="Get in touch with the Sums Up team. We're here to help with your budgeting and feature requests." 
+        <meta
+          name="description"
+          content="Get in touch with the Sums Up team. We're here to help with your budgeting and feature requests."
         />
       </Helmet>
 
       <main className="min-h-screen bg-background py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto space-y-12">
-          
-          <motion.div 
+
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -128,13 +142,13 @@ export default function ContactPage() {
             <Card className="border-border shadow-lg">
               <CardContent className="p-6 md:p-8">
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label htmlFor="name" className="text-foreground">Name</Label>
-                      <Input 
-                        id="name" 
-                        name="name" 
+                      <Input
+                        id="name"
+                        name="name"
                         placeholder="Maya Chen"
                         value={formData.name}
                         onChange={handleChange}
@@ -146,10 +160,10 @@ export default function ContactPage() {
 
                     <div className="space-y-2">
                       <Label htmlFor="email" className="text-foreground">Email Address</Label>
-                      <Input 
-                        id="email" 
-                        name="email" 
-                        type="email" 
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
                         placeholder="maya@example.com"
                         value={formData.email}
                         onChange={handleChange}
@@ -162,9 +176,9 @@ export default function ContactPage() {
 
                   <div className="space-y-2">
                     <Label htmlFor="subject" className="text-foreground">Subject</Label>
-                    <Input 
-                      id="subject" 
-                      name="subject" 
+                    <Input
+                      id="subject"
+                      name="subject"
                       placeholder="How can we help?"
                       value={formData.subject}
                       onChange={handleChange}
@@ -176,9 +190,9 @@ export default function ContactPage() {
 
                   <div className="space-y-2">
                     <Label htmlFor="message" className="text-foreground">Message</Label>
-                    <Textarea 
-                      id="message" 
-                      name="message" 
+                    <Textarea
+                      id="message"
+                      name="message"
                       placeholder="Please describe your question or issue in detail..."
                       rows={6}
                       value={formData.message}
@@ -189,8 +203,8 @@ export default function ContactPage() {
                     {errors.message && <p className="text-sm text-destructive">{errors.message}</p>}
                   </div>
 
-                  <Button 
-                    type="submit" 
+                  <Button
+                    type="submit"
                     className="w-full sm:w-auto px-8 transition-all active:scale-[0.98]"
                     size="lg"
                     disabled={isSubmitting}

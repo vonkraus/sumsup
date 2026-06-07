@@ -36,9 +36,6 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "externalBin": [
-      "binaries/pocketbase"
-    ],
     "macOS": {
       "minimumSystemVersion": "10.15"
     },
@@ -46,9 +43,6 @@
       "webviewInstallMode": {
         "type": "downloadBootstrapper"
       }
-    },
-    "android": {
-      "debugApplicationIdSuffix": ".debug"
     }
   }
 }
