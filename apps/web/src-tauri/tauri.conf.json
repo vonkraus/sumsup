@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "identifier": "com.vonkraus.sumsup",
   "build": {
-    "frontendDist": "../dist",
+    "frontendDist": "../../../dist/apps/web",
     "devUrl": "http://localhost:3000",
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build"
