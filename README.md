@@ -12,4 +12,12 @@ Export Your Work — Save your budget in your preferred format
 Cross-Platform — Available as a web app, native desktop app, and (coming soon) mobile app
 
 Platforms
-PlatformStatusWebLivemacOS (Apple Silicon)AvailablemacOS (Intel)AvailableWindows (x64)AvailableAndroidPlannediOS / iPadOSPlanned
+------------------------------------------------------
+Platform                                     Status
+------------------------------------------------------
+Web                                          Live
+macOS (Apple Silicon)                        Available
+macOS (Intel)                                Available
+Windows (x64)                                Available
+Android                                      Planned
+iOS / iPadOS                                 Planned
