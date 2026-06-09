@@ -1,2 +1,4 @@
 node_modules
 apps/web/src-tauri/binaries/
+dist/
+apps/web/sumsup-icon.png
