@@ -5,6 +5,7 @@ import { UploadCloud, FileSpreadsheet, FileJson, FileText, AlertCircle, AlertTri
 import { parseFile } from '@/lib/fileParser.js';
 import { mapImportedDataToCalculator } from '@/lib/dataMappingUtils.js';
 import { toast } from 'sonner';
+import { isNativeApp } from '@/lib/platform.js';
 
 export default function FileImporter({ isOpen, onOpenChange, onDataReady }) {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -17,6 +18,7 @@ export default function FileImporter({ isOpen, onOpenChange, onDataReady }) {
     try {
       const rawData = await parseFile(file);
       const mappedData = mapImportedDataToCalculator(rawData, file.name);
+      mappedData.suggestedName = file.name.replace(/\.[^/.]+$/, '');
       
       toast.success('File parsed successfully');
       onDataReady(mappedData);
@@ -42,7 +44,7 @@ export default function FileImporter({ isOpen, onOpenChange, onDataReady }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Import Budget Data</DialogTitle>
           <DialogDescription>
@@ -53,7 +55,7 @@ export default function FileImporter({ isOpen, onOpenChange, onDataReady }) {
         <div className="flex items-start gap-3 p-3 mt-2 rounded-lg bg-amber-500/10 text-amber-700 dark:text-amber-400 text-sm border border-amber-500/20">
           <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
           <p>
-            <strong>Temporary Data:</strong> Imported budget data is NOT saved to a database. It will be lost when you close or refresh this page.
+            <strong>Temporary Data:</strong> Imported budget data is NOT saved to a database. {isNativeApp() ? 'It will be cleared when you close the app.' : 'It will be lost when you close or refresh this page.'}
           </p>
         </div>
 
