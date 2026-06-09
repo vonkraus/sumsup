@@ -37,17 +37,13 @@ function BudgetCalculator() {
   const [incomePeriod, setIncomePeriod] = useState('monthly');
   const [incomeType, setIncomeType] = useState('Salary');
   const [categories, setCategories] = useState(INITIAL_CATEGORIES);
-  const [spreadsheetName, setSpreadsheetName] = useState(() => {
-    return localStorage.getItem('budget_spreadsheet_name') || '';
-  });
+  const [spreadsheetName, setSpreadsheetName] = useState('');
 
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isImportPreviewOpen, setIsImportPreviewOpen] = useState(false);
   const [pendingImportData, setPendingImportData] = useState(null);
 
-  useEffect(() => {
-    localStorage.setItem('budget_spreadsheet_name', spreadsheetName);
-  }, [spreadsheetName]);
+
 
   const monthlyIncome = incomePeriod === 'yearly' ? income / 12 : income;
 
@@ -130,6 +126,9 @@ function BudgetCalculator() {
       }
       if (pendingImportData.categories && pendingImportData.categories.length > 0) {
         setCategories(pendingImportData.categories);
+      }
+      if (pendingImportData.suggestedName) {
+        setSpreadsheetName(pendingImportData.suggestedName);
       }
       toast.success('Budget imported successfully!');
     }
