@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
-import { Copy, Download, Apple } from 'lucide-react';
+import { Copy, Apple, FolderOpen } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { buildCategoryFormulas, buildSummaryFormulas, formatCurrencyCell } from '@/lib/spreadsheetFormulaBuilder';
+import { saveFile, saveToFiles } from '@/lib/download.js';
+import { isNativeApp } from '@/lib/platform.js';
 
 function AppleNumbersExporter({ income, categories, spreadsheetName }) {
   const { t } = useLanguage();
@@ -58,18 +60,25 @@ function AppleNumbersExporter({ income, categories, spreadsheetName }) {
     }
   };
 
-  const handleDownloadCSV = () => {
+  const handleSaveToFiles = async () => {
     try {
       const csv = generateCSV();
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      const url = URL.createObjectURL(blob);
-      link.setAttribute('href', url);
-      link.setAttribute('download', getSafeFilename());
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const savedPath = await saveToFiles({ filename: getSafeFilename(), data: csv, mimeType: 'text/csv;charset=utf-8;' });
+      if (savedPath) {
+        toast.success(`Saved to Files: ${savedPath}`);
+      } else {
+        toast.success(t('export.csv_downloaded'));
+      }
+    } catch (error) {
+      console.error('Save error:', error);
+      toast.error(t('export.download_failed'));
+    }
+  };
+
+  const handleDownloadCSV = async () => {
+    try {
+      const csv = generateCSV();
+      await saveFile({ filename: getSafeFilename(), data: csv, mimeType: 'text/csv;charset=utf-8;' });
       toast.success(t('export.csv_downloaded'));
     } catch (error) {
       console.error('Download error:', error);
@@ -89,7 +98,7 @@ function AppleNumbersExporter({ income, categories, spreadsheetName }) {
           {t('export.numbers')}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{t('export.numbers')}</DialogTitle>
           <DialogDescription>
@@ -99,25 +108,28 @@ function AppleNumbersExporter({ income, categories, spreadsheetName }) {
         <div className="space-y-4">
           <div className="rounded-lg bg-muted p-4 space-y-2">
             <p className="text-sm font-medium">{t('export.apple_step1')}</p>
-            <div className="flex gap-2">
-              <Button 
-                onClick={handleDownloadCSV}
-                variant="secondary"
-                size="sm"
-                className="flex-1"
-              >
-                <Download className="mr-2 h-4 w-4" />
-                {t('export.download_csv')}
-              </Button>
+            <div className="grid grid-cols-1 gap-2">
+
               <Button 
                 onClick={handleCopyToClipboard}
                 variant="secondary"
                 size="sm"
-                className="flex-1"
+                className="w-full"
               >
                 <Copy className="mr-2 h-4 w-4" />
                 {t('export.copy')}
               </Button>
+              {isNativeApp() && (
+                <Button
+                  onClick={handleSaveToFiles}
+                  variant="secondary"
+                  size="sm"
+                  className="w-full"
+                >
+                  <FolderOpen className="mr-2 h-4 w-4" />
+                  Save to Files
+                </Button>
+              )}
             </div>
           </div>
 

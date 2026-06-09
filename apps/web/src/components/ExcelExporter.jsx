@@ -5,6 +5,8 @@ import { toast } from 'sonner';
 import * as XLSX from 'xlsx';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { buildCategoryFormulas, buildSummaryFormulas, formatCurrencyCell } from '@/lib/spreadsheetFormulaBuilder';
+import { saveFile, saveToFiles } from '@/lib/download.js';
+import { isNativeApp } from '@/lib/platform.js';
 
 function ExcelExporter({ income, categories, spreadsheetName }) {
   const { t } = useLanguage();
@@ -15,7 +17,7 @@ function ExcelExporter({ income, categories, spreadsheetName }) {
     return `${safeName}_summary`;
   };
 
-  const handleExport = () => {
+  const handleExport = async () => {
     try {
       const sheetName = spreadsheetName ? spreadsheetName.substring(0, 31) : (t('export.spreadsheet_summary') || 'Budget Summary');
 
@@ -74,7 +76,13 @@ function ExcelExporter({ income, categories, spreadsheetName }) {
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, summarySheet, sheetName);
 
-      XLSX.writeFile(workbook, `${getSafeFilename()}.xlsx`);
+      const xlsxBase64 = XLSX.write(workbook, { type: 'base64', bookType: 'xlsx' });
+      if (isNativeApp()) {
+        const savedPath = await saveToFiles({ filename: `${getSafeFilename()}.xlsx`, data: xlsxBase64, mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', isBase64: true });
+        if (savedPath) toast.success(`Saved to your Documents folder: ${savedPath}`);
+      } else {
+        await saveFile({ filename: `${getSafeFilename()}.xlsx`, data: xlsxBase64, mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', isBase64: true });
+      }
 
       toast.success(t('export.excel_success') || 'Excel file exported successfully');
     } catch (error) {
