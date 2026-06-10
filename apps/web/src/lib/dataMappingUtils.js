@@ -13,6 +13,7 @@ export const mapImportedDataToCalculator = (rawParsedData, filename) => {
     if (rawParsedData.income !== undefined || rawParsedData.categories) {
       return {
         income: Number(rawParsedData.income) || 0,
+        incomePeriod: rawParsedData.incomePeriod || 'monthly',
         categories: Array.isArray(rawParsedData.categories)
           ? rawParsedData.categories.map(c => ({
               id: c.id || Math.random().toString(36).substring(2, 9),
