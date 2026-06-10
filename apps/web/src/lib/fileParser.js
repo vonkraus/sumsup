@@ -7,14 +7,19 @@ export const parseExcelFile = async (file) => {
     reader.onload = (e) => {
       try {
         const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
+        const workbook = XLSX.read(data, { type: 'array', cellFormula: false });
         const firstSheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[firstSheetName];
-        
-        // Convert to array of arrays first to handle various header structures
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, {
+          header: 1,
+          defval: '',
+          blankrows: false,
+          raw: false
+        });
+        console.log('XLSX parsed rows:', jsonData.length, 'first row:', JSON.stringify(jsonData[0]));
         resolve(jsonData);
       } catch (error) {
+        console.error('XLSX parse error:', error);
         reject(new Error('Failed to parse Excel file. The file might be corrupted.'));
       }
     };
@@ -26,18 +31,17 @@ export const parseExcelFile = async (file) => {
 export const parseCSVFile = async (file) => {
   return new Promise((resolve, reject) => {
     Papa.parse(file, {
-      header: false, // Use false to get array of arrays similar to Excel parsing for uniform mapping
+      header: false,
       skipEmptyLines: true,
       complete: (results) => {
+        console.log('CSV parsed rows:', results.data.length, 'first row:', JSON.stringify(results.data[0]));
         if (results.errors && results.errors.length > 0) {
           reject(new Error('Failed to parse CSV file: ' + results.errors[0].message));
         } else {
           resolve(results.data);
         }
       },
-      error: (error) => {
-        reject(new Error('Failed to read CSV file: ' + error.message));
-      }
+      error: (error) => reject(new Error('Failed to read CSV file: ' + error.message))
     });
   });
 };
@@ -48,6 +52,7 @@ export const parseJSONFile = async (file) => {
     reader.onload = (e) => {
       try {
         const jsonData = JSON.parse(e.target.result);
+        console.log('JSON parsed:', JSON.stringify(jsonData).substring(0, 100));
         resolve(jsonData);
       } catch (error) {
         reject(new Error('Invalid JSON format. Please ensure the file contains valid JSON.'));
@@ -60,9 +65,8 @@ export const parseJSONFile = async (file) => {
 
 export const parseFile = async (file) => {
   if (!file) throw new Error('No file provided.');
-
   const extension = file.name.split('.').pop().toLowerCase();
-  
+  console.log('Importing file:', file.name, 'extension:', extension, 'size:', file.size);
   switch (extension) {
     case 'xlsx':
     case 'xls':

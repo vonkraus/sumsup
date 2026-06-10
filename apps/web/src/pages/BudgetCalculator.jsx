@@ -10,6 +10,7 @@ import FloatingSummaryPanel from '@/components/FloatingSummaryPanel.jsx';
 import ExcelExporter from '@/components/ExcelExporter.jsx';
 import GoogleSheetsExporter from '@/components/GoogleSheetsExporter.jsx';
 import AppleNumbersExporter from '@/components/AppleNumbersExporter.jsx';
+import JsonExporter from '@/components/JsonExporter.jsx';
 import FileImporter from '@/components/FileImporter.jsx';
 import ImportPreview from '@/components/ImportPreview.jsx';
 import ResourceCard from '@/components/ResourceCard.jsx';
@@ -20,6 +21,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button.jsx';
 import { useLanguage } from '@/contexts/LanguageContext.jsx';
 import { useCanonicalTag } from '@/hooks/useCanonicalTag.js';
+import { isNativeApp } from '@/lib/platform.js';
 
 const INITIAL_CATEGORIES = [
   { id: 'housing', name: 'Housing', amount: 0, group: 'NEEDS', billingPeriod: 'monthly' },
@@ -380,7 +382,7 @@ function BudgetCalculator() {
         onConfirm={confirmImport} 
       />
 
-      <Toaster position="top-center" />
+      {isNativeApp() ? <Toaster position="bottom-center" offset="24px" /> : <Toaster position="top-center" />}
     </>
   );
 }
