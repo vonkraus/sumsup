@@ -40,6 +40,7 @@ function BudgetCalculator() {
   const [incomeType, setIncomeType] = useState('Salary');
   const [categories, setCategories] = useState(INITIAL_CATEGORIES);
   const [spreadsheetName, setSpreadsheetName] = useState('');
+  const [incomeResetKey, setIncomeResetKey] = useState(0);
 
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isImportPreviewOpen, setIsImportPreviewOpen] = useState(false);
@@ -248,6 +249,14 @@ function BudgetCalculator() {
               onSetIncome={handleSetIncome} 
             />
 
+            {(income > 0 || categories.some(c => c.amount > 0)) && (
+              <BudgetSummaryCard 
+                income={income} 
+                monthlyIncome={monthlyIncome}
+                incomePeriod={incomePeriod}
+                categories={normalizedMonthlyCategories} 
+              />
+            )}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -284,14 +293,7 @@ function BudgetCalculator() {
               </Card>
             </motion.div>
 
-            {(income > 0 || categories.some(c => c.amount > 0)) && (
-              <BudgetSummaryCard 
-                income={income} 
-                monthlyIncome={monthlyIncome}
-                incomePeriod={incomePeriod}
-                categories={normalizedMonthlyCategories} 
-              />
-            )}
+
 
             {categories.length > 0 && (
               <motion.div
@@ -322,6 +324,12 @@ function BudgetCalculator() {
                   <AppleNumbersExporter 
                     income={monthlyIncome} 
                     categories={normalizedMonthlyCategories} 
+                    spreadsheetName={spreadsheetName}
+                  />
+                  <JsonExporter
+                    income={monthlyIncome}
+                    incomePeriod={incomePeriod}
+                    categories={normalizedMonthlyCategories}
                     spreadsheetName={spreadsheetName}
                   />
                 </div>

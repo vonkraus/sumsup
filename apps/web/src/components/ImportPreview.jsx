@@ -12,7 +12,7 @@ export default function ImportPreview({ isOpen, onOpenChange, data, onConfirm })
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-2xl max-h-[85vh] flex flex-col">
+      <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
         <DialogHeader>
           <DialogTitle>Preview Import</DialogTitle>
           <DialogDescription>
@@ -20,14 +20,14 @@ export default function ImportPreview({ isOpen, onOpenChange, data, onConfirm })
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex items-start gap-3 p-3 mt-2 rounded-lg bg-amber-500/10 text-amber-700 dark:text-amber-400 text-sm border border-amber-500/20">
+        <div className="flex items-start gap-3 p-2 rounded-lg bg-amber-500/10 text-amber-700 dark:text-amber-400 text-sm border border-amber-500/20">
           <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
           <p>
             <strong>Session Only:</strong> This data is temporary. Applying this import will replace your current session data, but it will NOT be permanently saved to a database.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 py-2">
+        <div className="grid grid-cols-2 gap-2 py-1">
           <div className="bg-muted p-4 rounded-xl border">
             <p className="text-sm text-muted-foreground font-medium mb-1">Detected Income</p>
             <p className="text-2xl font-bold text-foreground">
@@ -80,7 +80,7 @@ export default function ImportPreview({ isOpen, onOpenChange, data, onConfirm })
           </Table>
         </div>
 
-        <DialogFooter className="mt-6">
+        <DialogFooter className="mt-2 pt-2 border-t shrink-0">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             <X className="w-4 h-4 mr-2" />
             Cancel

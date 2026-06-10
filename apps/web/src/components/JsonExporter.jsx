@@ -2,9 +2,10 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { FileJson } from 'lucide-react';
 import { toast } from 'sonner';
-import { saveFile } from '@/lib/download.js';
+import { saveFile, saveToFiles } from '@/lib/download.js';
+import { isNativeApp } from '@/lib/platform.js';
 
-function JsonExporter({ income, categories, spreadsheetName }) {
+function JsonExporter({ income, incomePeriod, categories, spreadsheetName }) {
   const getSafeFilename = () => {
     const baseName = spreadsheetName ? spreadsheetName.trim() : 'Budget';
     const safeName = baseName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
@@ -18,6 +19,7 @@ function JsonExporter({ income, categories, spreadsheetName }) {
         exportedAt: new Date().toISOString(),
         spreadsheetName: spreadsheetName || '',
         income,
+        incomePeriod: incomePeriod || 'monthly',
         categories: categories.map(c => ({
           id: c.id,
           name: c.name,
@@ -27,13 +29,21 @@ function JsonExporter({ income, categories, spreadsheetName }) {
         }))
       };
 
-      await saveFile({
-        filename: getSafeFilename(),
-        data: JSON.stringify(exportData, null, 2),
-        mimeType: 'application/json'
-      });
-
-      toast.success('Budget backed up as JSON');
+      if (isNativeApp()) {
+        const savedPath = await saveToFiles({
+          filename: getSafeFilename(),
+          data: JSON.stringify(exportData, null, 2),
+          mimeType: 'application/json'
+        });
+        if (savedPath) toast.success(`Saved to your Documents folder: ${savedPath}`);
+      } else {
+        await saveFile({
+          filename: getSafeFilename(),
+          data: JSON.stringify(exportData, null, 2),
+          mimeType: 'application/json'
+        });
+        toast.success('Budget backed up as JSON');
+      }
     } catch (error) {
       console.error('JSON export error:', error);
       toast.error('Failed to export JSON backup');

@@ -85,8 +85,8 @@ const FREQUENCY_OPTIONS = [
 
 function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
   const { t } = useLanguage();
-  const [inputValue, setInputValue] = useState('');
-  const [period, setPeriod] = useState(incomePeriod);
+  const [inputValue, setInputValue] = useState(income > 0 ? String(income) : '');
+  const [period, setPeriod] = useState(incomePeriod || 'monthly');
   const [selectedState, setSelectedState] = useState('');
   const [payFrequency, setPayFrequency] = useState('monthly');
   const [error, setError] = useState('');
