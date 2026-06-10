@@ -1,38 +1,45 @@
+const cleanNumber = (val) => {
+  if (val === null || val === undefined || val === '') return NaN;
+  if (typeof val === 'number') return val;
+  return Number(String(val).replace(/[^0-9.-]+/g, ''));
+};
+
 export const mapImportedDataToCalculator = (rawParsedData, filename) => {
   let income = 0;
   const categories = [];
-  
-  // Handle JSON structurally if it matches our expected export shape
+
+  // Handle structured JSON (our own JSON export format)
   if (!Array.isArray(rawParsedData) && typeof rawParsedData === 'object') {
     if (rawParsedData.income !== undefined || rawParsedData.categories) {
       return {
         income: Number(rawParsedData.income) || 0,
-        categories: Array.isArray(rawParsedData.categories) ? rawParsedData.categories.map(c => ({
-          id: c.id || Math.random().toString(36).substring(2, 9),
-          name: c.name || 'Unnamed Category',
-          amount: Number(c.amount) || 0,
-          group: c.group || 'NEEDS',
-          billingPeriod: c.billingPeriod || 'monthly'
-        })) : []
+        categories: Array.isArray(rawParsedData.categories)
+          ? rawParsedData.categories.map(c => ({
+              id: c.id || Math.random().toString(36).substring(2, 9),
+              name: c.name || 'Unnamed Category',
+              amount: Number(c.amount) || 0,
+              group: c.group || 'NEEDS',
+              billingPeriod: c.billingPeriod || 'monthly'
+            }))
+          : []
       };
     }
   }
 
-  // Handle Array of Arrays (CSV and Excel mapped formats)
   if (Array.isArray(rawParsedData)) {
-    // Check if it's an array of objects (from generic JSON imports)
+    // Array of objects (generic JSON)
     if (rawParsedData.length > 0 && !Array.isArray(rawParsedData[0]) && typeof rawParsedData[0] === 'object') {
       rawParsedData.forEach(row => {
-        const name = row.Category || row.name || row.Name;
-        const amount = Number(row.Amount || row.amount || row.Value || row.value);
-        if (name && !isNaN(amount)) {
-          if (name.toLowerCase().includes('income')) {
+        const name = row.Category || row.category || row.name || row.Name;
+        const amount = cleanNumber(row.Amount || row.amount || row.Value || row.value);
+        if (name && !isNaN(amount) && amount > 0) {
+          if (String(name).toLowerCase().includes('income')) {
             income += amount;
           } else {
             categories.push({
               id: Math.random().toString(36).substring(2, 9),
               name: String(name),
-              amount: amount,
+              amount,
               group: row.Group || row.group || 'NEEDS',
               billingPeriod: row.BillingPeriod || row.billingPeriod || 'monthly'
             });
@@ -42,54 +49,68 @@ export const mapImportedDataToCalculator = (rawParsedData, filename) => {
       return { income, categories };
     }
 
-    // Handle 2D Array (from Excel/CSV parse)
+    // 2D Array from Excel/CSV
     let isHeaderFound = false;
     let nameIndex = 0;
     let amountIndex = 1;
 
-    rawParsedData.forEach(row => {
-      if (!row || row.length === 0) return;
+    for (const row of rawParsedData) {
+      if (!row || row.length === 0) continue;
+
+      const firstCell = String(row[0] || '').trim();
+      if (!firstCell) continue;
 
       // Detect header row
       if (!isHeaderFound) {
-        const rowString = row.join(' ').toLowerCase();
-        if (rowString.includes('category') || rowString.includes('amount')) {
+        const rowLower = row.map(c => String(c || '').toLowerCase());
+        const hasCategory = rowLower.some(c => c.includes('category') || c.includes('name'));
+        const hasAmount = rowLower.some(c => c.includes('amount') || c.includes('value'));
+
+        if (hasCategory || hasAmount) {
           isHeaderFound = true;
-          nameIndex = row.findIndex(cell => typeof cell === 'string' && cell.toLowerCase().includes('category')) || 0;
-          amountIndex = row.findIndex(cell => typeof cell === 'string' && cell.toLowerCase().includes('amount'));
-          if (amountIndex === -1) amountIndex = 1;
-          return; // Skip header row
+          const catIdx = rowLower.findIndex(c => c.includes('category') || c.includes('name'));
+          const amtIdx = rowLower.findIndex(c => c.includes('amount') || c.includes('value'));
+          if (catIdx >= 0) nameIndex = catIdx;
+          if (amtIdx >= 0) amountIndex = amtIdx;
+          console.log('Header found, nameIndex:', nameIndex, 'amountIndex:', amountIndex);
+          continue;
         }
       }
 
-      // Check for summary rows (Total Income, Total Expenses, Remaining Balance) typical of our app's export
-      const firstCell = String(row[0] || '').trim();
-      const possibleAmount = Number(String(row[amountIndex]).replace(/[^0-9.-]+/g, ""));
+      const possibleAmount = cleanNumber(row[amountIndex]);
 
+      // Total Income row
       if (firstCell.toLowerCase() === 'total income' && !isNaN(possibleAmount)) {
         income = possibleAmount;
-        return;
-      }
-      
-      if (firstCell.toLowerCase().includes('total') || firstCell.toLowerCase().includes('balance')) {
-        return; // Skip summary rows
+        console.log('Income found:', income);
+        continue;
       }
 
-      // Standard category rows
+      // Skip summary/header rows
+      if (
+        firstCell.toLowerCase().includes('total') ||
+        firstCell.toLowerCase().includes('balance') ||
+        firstCell.toLowerCase().includes('budget summary') ||
+        firstCell.toLowerCase().includes('category') ||
+        firstCell.toLowerCase().includes('remaining')
+      ) continue;
+
+      // Valid category row
       if (firstCell && !isNaN(possibleAmount) && possibleAmount > 0) {
-        // Exclude percentage strings or header artifacts
         categories.push({
           id: Math.random().toString(36).substring(2, 9),
           name: firstCell,
           amount: possibleAmount,
-          group: 'NEEDS', // Default fallback
+          group: 'NEEDS',
           billingPeriod: 'monthly'
         });
+        console.log('Category added:', firstCell, possibleAmount);
       }
-    });
+    }
   }
 
-  // Fallback structural validation
+  console.log('Import result - income:', income, 'categories:', categories.length);
+
   if (categories.length === 0 && income === 0) {
     throw new Error('Could not find recognizable budget data. Ensure columns are named "Category" and "Amount".');
   }

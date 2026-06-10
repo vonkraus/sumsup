@@ -26,23 +26,20 @@ const webDownload = (data, filename, mimeType, isBase64) => {
   URL.revokeObjectURL(url);
 };
 
-const ensureDirectory = async (Filesystem, Directory) => {
-  try {
-    await Filesystem.mkdir({ path: '', directory: Directory.Documents, recursive: true });
-  } catch (e) {
-    // Directory already exists — that's fine
-  }
-};
-
 export const saveFile = async ({ filename, data, mimeType, isBase64 = false }) => {
   if (isNativeApp()) {
-    const { Filesystem, Directory, Encoding } = await import('@capacitor/filesystem');
-    const { Share } = await import('@capacitor/share');
-    await ensureDirectory(Filesystem, Directory);
-    const writeOptions = { path: filename, data, directory: Directory.Documents };
-    if (!isBase64) writeOptions.encoding = Encoding.UTF8;
-    const result = await Filesystem.writeFile(writeOptions);
-    await Share.share({ title: filename, url: result.uri, dialogTitle: 'Save your budget file' });
+    try {
+      const { Filesystem, Directory, Encoding } = await import('@capacitor/filesystem');
+      const { Share } = await import('@capacitor/share');
+      const writeOptions = { path: filename, data, directory: Directory.Documents };
+      if (!isBase64) writeOptions.encoding = Encoding.UTF8;
+      const result = await Filesystem.writeFile(writeOptions);
+      console.log('saveFile wrote to:', result.uri);
+      await Share.share({ title: filename, url: result.uri, dialogTitle: 'Save your budget file' });
+    } catch (error) {
+      console.error('saveFile error:', JSON.stringify(error), error.message);
+      throw error;
+    }
   } else {
     webDownload(data, filename, mimeType, isBase64);
   }
@@ -50,12 +47,17 @@ export const saveFile = async ({ filename, data, mimeType, isBase64 = false }) =
 
 export const saveToFiles = async ({ filename, data, mimeType, isBase64 = false }) => {
   if (isNativeApp()) {
-    const { Filesystem, Directory, Encoding } = await import('@capacitor/filesystem');
-    await ensureDirectory(Filesystem, Directory);
-    const writeOptions = { path: filename, data, directory: Directory.Documents };
-    if (!isBase64) writeOptions.encoding = Encoding.UTF8;
-    await Filesystem.writeFile(writeOptions);
-    return filename;
+    try {
+      const { Filesystem, Directory, Encoding } = await import('@capacitor/filesystem');
+      const writeOptions = { path: filename, data, directory: Directory.Documents };
+      if (!isBase64) writeOptions.encoding = Encoding.UTF8;
+      const result = await Filesystem.writeFile(writeOptions);
+      console.log('saveToFiles wrote to:', result.uri);
+      return filename;
+    } catch (error) {
+      console.error('saveToFiles error:', JSON.stringify(error), error.message);
+      throw error;
+    }
   } else {
     webDownload(data, filename, mimeType, isBase64);
     return null;
