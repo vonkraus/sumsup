@@ -60,6 +60,17 @@ jobs:
       - name: Build web app
         run: npm run build --prefix apps/web
 
+      - name: Clear beforeBuildCommand for CI
+        shell: bash
+        run: |
+          node -e "
+            const fs = require('fs');
+            const p = 'apps/web/src-tauri/tauri.conf.json';
+            const c = JSON.parse(fs.readFileSync(p, 'utf8'));
+            delete c.build.beforeBuildCommand;
+            fs.writeFileSync(p, JSON.stringify(c, null, 2));
+          "
+
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0
         env:
