@@ -2,3 +2,5 @@ node_modules
 apps/web/src-tauri/binaries/
 dist/
 apps/web/sumsup-icon.png
+apps/web/android/key.properties
+apps/web/android/sumsup-release.keystore
