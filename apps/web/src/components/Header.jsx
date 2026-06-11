@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LanguageSelector } from '@/components/LanguageSelector.jsx';
 import { useLanguage } from '@/contexts/LanguageContext.jsx';
 import { cn } from '@/lib/utils.js';
@@ -7,6 +7,15 @@ import { cn } from '@/lib/utils.js';
 export function Header() {
   const { t } = useLanguage();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleDownloadClick = () => {
+    if (location.pathname === '/') {
+      document.getElementById('downloads')?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate('/#downloads');
+    }
+  };
   
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60" style={{ paddingTop: "env(safe-area-inset-top)" }}>
@@ -64,6 +73,12 @@ export function Header() {
             >
               Knowledge Base
             </Link>
+            <button
+              onClick={handleDownloadClick}
+              className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground"
+            >
+              Download
+            </button>
           </nav>
         </div>
 
