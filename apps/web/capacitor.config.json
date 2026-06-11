@@ -1,5 +1,5 @@
 {
-  "appId": "com.vonkraus.sumsup",
+  "appId": "com.sumsup.app",
   "appName": "Sums Up",
   "webDir": "../../dist/apps/web",
   "server": {
