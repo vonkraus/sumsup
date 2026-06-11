@@ -14,7 +14,7 @@ import JsonExporter from '@/components/JsonExporter.jsx';
 import FileImporter from '@/components/FileImporter.jsx';
 import ImportPreview from '@/components/ImportPreview.jsx';
 import ResourceCard from '@/components/ResourceCard.jsx';
-import { Calculator, List, Plus, DownloadCloud, ArrowRight, BookOpen } from 'lucide-react';
+import { Monitor, Laptop, Smartphone, Tablet, Calculator, List, Plus, DownloadCloud, ArrowRight, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Toaster, toast } from 'sonner';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx';
@@ -366,6 +366,44 @@ function BudgetCalculator() {
               </div>
             </motion.div>
 
+
+            {/* Download Section */}
+            <motion.div
+              id="downloads"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="mt-12 rounded-2xl bg-muted/30 border border-border p-6 md:p-8"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                <div className="space-y-6">
+                  <div className="space-y-3">
+                    <p className="text-xs font-semibold tracking-widest text-muted-foreground uppercase">Desktop</p>
+                    <div className="flex gap-3 flex-wrap">
+                      <a href="https://github.com/vonkraus/sumsup/releases/latest/download/Sums.Up_0.3.4_x64-setup.exe" className="group flex flex-col items-center gap-2 p-4 rounded-2xl border border-border/60 bg-card hover:border-primary/50 hover:shadow-md transition-all duration-200 w-24" title="Windows"><Monitor className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors" /><span className="text-xs text-muted-foreground group-hover:text-foreground transition-colors">Windows</span></a>
+                      <a href="https://github.com/vonkraus/sumsup/releases/latest/download/Sums.Up_0.3.4_aarch64.dmg" className="group flex flex-col items-center gap-2 p-4 rounded-2xl border border-border/60 bg-card hover:border-primary/50 hover:shadow-md transition-all duration-200 w-24" title="Mac M1+"><Laptop className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors" /><span className="text-xs text-muted-foreground group-hover:text-foreground transition-colors">Mac (M1+)</span></a>
+                      <a href="https://github.com/vonkraus/sumsup/releases/latest/download/Sums.Up_0.3.4_x64.dmg" className="group flex flex-col items-center gap-2 p-4 rounded-2xl border border-border/60 bg-card hover:border-primary/50 hover:shadow-md transition-all duration-200 w-24" title="Mac Intel"><Laptop className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors" /><span className="text-xs text-muted-foreground group-hover:text-foreground transition-colors">Mac (Intel)</span></a>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <p className="text-xs font-semibold tracking-widest text-muted-foreground uppercase">Mobile</p>
+                    <div className="flex gap-3">
+                      <div className="relative flex flex-col items-center gap-2 p-4 rounded-2xl border border-border/60 bg-card opacity-60 w-24 cursor-not-allowed"><Smartphone className="h-8 w-8 text-muted-foreground" /><span className="text-xs text-muted-foreground">Android</span><span className="absolute -top-2 -right-2 text-[10px] bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full font-medium">Soon</span></div>
+                      <div className="relative flex flex-col items-center gap-2 p-4 rounded-2xl border border-border/60 bg-card opacity-60 w-24 cursor-not-allowed"><Tablet className="h-8 w-8 text-muted-foreground" /><span className="text-xs text-muted-foreground">iOS</span><span className="absolute -top-2 -right-2 text-[10px] bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full font-medium">Soon</span></div>
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-4 text-center lg:text-left">
+                  <h2 className="text-2xl font-semibold text-foreground">Available for free on <span className="text-primary">all your devices</span></h2>
+                  <p className="text-muted-foreground">Budget smarter on desktop or mobile. No account needed, no data stored.</p>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+                    <a href="https://github.com/vonkraus/sumsup/releases/latest/download/Sums.Up_0.3.4_x64-setup.exe" className="inline-flex items-center justify-center h-11 px-6 rounded-full bg-primary text-primary-foreground font-medium hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-md"><Monitor className="mr-2 h-4 w-4" />Download for Windows</a>
+                    <a href="https://github.com/vonkraus/sumsup/releases/latest" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center h-11 px-6 rounded-full border border-border bg-background text-foreground font-medium hover:border-primary/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">All releases<ArrowRight className="ml-2 h-4 w-4" /></a>
+                  </div>
+                  <p className="text-xs text-muted-foreground">macOS: right-click the app and click Open if you see a security warning.</p>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
