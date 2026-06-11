@@ -4,3 +4,6 @@ dist/
 apps/web/sumsup-icon.png
 apps/web/android/key.properties
 apps/web/android/sumsup-release.keystore
+sumsup-release.keystore
+.DS_Store
+**/.DS_Store
