@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { BookOpen } from 'lucide-react';
 import ResourceCard from '@/components/ResourceCard.jsx';
 import { useCanonicalTag } from '@/hooks/useCanonicalTag.js';
+import GoogleAd from '@/components/GoogleAd.jsx';
 
 export default function BlogPage() {
   useCanonicalTag();
@@ -161,6 +162,8 @@ export default function BlogPage() {
             ))}
           </motion.div>
         </section>
+
+        <GoogleAd />
 
         {/* Budgeting Methods Section */}
         <section>

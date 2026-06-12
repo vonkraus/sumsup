@@ -9,6 +9,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useCanonicalTag } from '@/hooks/useCanonicalTag.js';
+import GoogleAd from '@/components/GoogleAd.jsx';
 
 const faqs = [
   {
@@ -103,25 +104,27 @@ export default function FAQPage() {
           >
             <Accordion type="single" collapsible className="w-full space-y-4">
               {faqs.map((faq, index) => (
-                <AccordionItem 
-                  key={index} 
-                  value={`item-${index}`}
-                  className="border border-border rounded-xl px-4 bg-background data-[state=open]:shadow-sm transition-all"
-                >
-                  <AccordionTrigger className="text-left hover:no-underline py-4 font-medium text-foreground hover:text-primary transition-colors">
-                    <span className="flex items-center flex-wrap gap-2">
-                      {faq.q}
-                      {faq.isFeature && (
-                        <span className="inline-flex items-center rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
-                          Sums Up
-                        </span>
-                      )}
-                    </span>
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed pb-4">
-                    {faq.a}
-                  </AccordionContent>
-                </AccordionItem>
+                <React.Fragment key={index}>
+                  <AccordionItem 
+                    value={`item-${index}`}
+                    className="border border-border rounded-xl px-4 bg-background data-[state=open]:shadow-sm transition-all"
+                  >
+                    <AccordionTrigger className="text-left hover:no-underline py-4 font-medium text-foreground hover:text-primary transition-colors">
+                      <span className="flex items-center flex-wrap gap-2">
+                        {faq.q}
+                        {faq.isFeature && (
+                          <span className="inline-flex items-center rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
+                            Sums Up
+                          </span>
+                        )}
+                      </span>
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground leading-relaxed pb-4">
+                      {faq.a}
+                    </AccordionContent>
+                  </AccordionItem>
+                  {index === 2 && <GoogleAd />}
+                </React.Fragment>
               ))}
             </Accordion>
           </motion.div>
