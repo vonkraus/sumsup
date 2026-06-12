@@ -84,7 +84,7 @@ export const CookieConsent = () => {
                 <p id="cookie-consent-desc" className="text-sm text-muted-foreground max-w-3xl">
                   We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. 
                   By clicking "Accept All", you consent to our use of cookies. Read our{' '}
-                  <Link to="/privacy-policy" className="font-medium text-foreground underline underline-offset-4 hover:text-primary transition-colors">
+                  <Link to="/privacy" className="font-medium text-foreground underline underline-offset-4 hover:text-primary transition-colors">
                     Privacy Policy
                   </Link>{' '}
                   to learn more.
