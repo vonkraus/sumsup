@@ -2,7 +2,7 @@
   "$schema": "../../../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Sums Up",
   "version": "0.2.5",
-  "identifier": "com.vonkraus.sumsup",
+  "identifier": "com.sumsup.app",
   "build": {
     "frontendDist": "../../../dist/apps/web",
     "devUrl": "http://localhost:3000",
@@ -37,7 +37,8 @@
       "icons/icon.ico"
     ],
     "macOS": {
-      "minimumSystemVersion": "10.15"
+      "minimumSystemVersion": "10.15",
+      "signingIdentity": "Developer ID Application: Automated Tek LLC (AFHC4AF39T)"
     },
     "windows": {
       "webviewInstallMode": {
