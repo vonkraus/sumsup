@@ -5,5 +5,12 @@ apps/web/sumsup-icon.png
 apps/web/android/key.properties
 apps/web/android/sumsup-release.keystore
 sumsup-release.keystore
+# macOS signing credentials
+*.key
+*.csr
+*.cer
+*.pem
+*.p12
+*.p12.b64
 .DS_Store
 **/.DS_Store
