@@ -8,6 +8,7 @@ import PrivacyPolicy from '@/pages/PrivacyPolicy.jsx';
 import TermsOfService from '@/pages/TermsOfService.jsx';
 import FAQPage from '@/pages/FAQPage.jsx';
 import BlogPage from '@/pages/BlogPage.jsx';
+import ArticlePage from '@/pages/ArticlePage.jsx';
 import HomePage from '@/pages/HomePage.jsx';
 import { LanguageProvider } from '@/contexts/LanguageContext.jsx';
 import { Header } from '@/components/Header.jsx';
@@ -79,6 +80,7 @@ function App() {
               <Route path="/terms" element={<TermsOfService />} />
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:slug" element={<ArticlePage />} />
               <Route path="*" element={
                 <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
                   <h1 className="text-4xl font-bold mb-4">404</h1>
