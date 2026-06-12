@@ -17,6 +17,7 @@ import ResourceCard from '@/components/ResourceCard.jsx';
 import { Monitor, Laptop, Smartphone, Tablet, Calculator, List, Plus, DownloadCloud, ArrowRight, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Toaster, toast } from 'sonner';
+import GoogleAd from '@/components/GoogleAd.jsx';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx';
 import { Button } from '@/components/ui/button.jsx';
 import { useLanguage } from '@/contexts/LanguageContext.jsx';
@@ -335,6 +336,8 @@ function BudgetCalculator() {
                 </div>
               </motion.div>
             )}
+
+            <GoogleAd />
 
             {/* Featured Resources Section */}
             <motion.div
