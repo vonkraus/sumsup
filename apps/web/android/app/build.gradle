@@ -37,6 +37,25 @@ android {
     }
 }
 
+tasks.whenTaskAdded { task ->
+    if (task.name == 'bundleRelease') {
+        task.doLast {
+            def outputDir = new File("${buildDir}/outputs/bundle/release")
+            def versionName = android.defaultConfig.versionName
+            def appId = android.defaultConfig.applicationId
+            def named = new File(outputDir, "${appId}-${versionName}.aab")
+            def original = new File(outputDir, 'app-release.aab')
+            if (original.exists()) {
+                java.nio.file.Files.copy(
+                    original.toPath(),
+                    named.toPath(),
+                    java.nio.file.StandardCopyOption.REPLACE_EXISTING
+                )
+            }
+        }
+    }
+}
+
 repositories {
     flatDir{
         dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
