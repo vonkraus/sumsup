@@ -3,13 +3,13 @@ set -e
 
 PROJECT_DIR="$(cd "$(dirname "$0")/App" && pwd)"
 PROJECT="$PROJECT_DIR/Sums Up.xcodeproj"
-SCHEME="App"
+SCHEME="Sums Up"
 BUNDLE_ID="com.sumsup.app"
 EXPORT_OPTIONS="$(cd "$(dirname "$0")" && pwd)/ExportOptions.plist"
 OUTPUTS_DIR="$(cd "$(dirname "$0")" && pwd)/outputs"
 
 # Read version from project
-VERSION=$(xcodebuild -project "$PROJECT" -scheme "$SCHEME" -showBuildSettings 2>/dev/null | grep MARKETING_VERSION | head -1 | awk '{print $3}')
+VERSION=$(grep -m1 'MARKETING_VERSION' "$PROJECT/project.pbxproj" | awk -F' = ' '{gsub(/;/,"",$2); print $2}' | xargs)
 ARCHIVE_PATH="$OUTPUTS_DIR/archive/${BUNDLE_ID}-${VERSION}.xcarchive"
 EXPORT_PATH="$OUTPUTS_DIR/ipa/${BUNDLE_ID}-${VERSION}"
 
