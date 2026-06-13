@@ -1,4 +1,7 @@
 node_modules
+.env
+.env.local
+.env*.local
 apps/web/src-tauri/binaries/
 dist/
 apps/web/sumsup-icon.png

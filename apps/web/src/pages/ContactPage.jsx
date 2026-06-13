@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useCanonicalTag } from '@/hooks/useCanonicalTag.js';
 
-const WEB3FORMS_ACCESS_KEY = '36844f4a-c20f-43c1-8403-36b48d71761b';
+const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_KEY;
 
 export default function ContactPage() {
   useCanonicalTag();
