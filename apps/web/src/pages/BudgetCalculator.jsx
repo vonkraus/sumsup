@@ -17,7 +17,7 @@ import ImportPreview from '@/components/ImportPreview.jsx';
 import ResourceCard from '@/components/ResourceCard.jsx';
 import { Monitor, Laptop, Smartphone, Tablet, Calculator, List, Plus, DownloadCloud, ArrowRight, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Toaster, toast } from 'sonner';
+import { toast } from 'sonner';
 import GoogleAd from '@/components/GoogleAd.jsx';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx';
 import { Button } from '@/components/ui/button.jsx';
@@ -432,7 +432,6 @@ function BudgetCalculator() {
         onConfirm={confirmImport} 
       />
 
-      {isNativeApp() ? <Toaster position="bottom-center" offset="24px" /> : <Toaster position="top-center" />}
     </>
   );
 }

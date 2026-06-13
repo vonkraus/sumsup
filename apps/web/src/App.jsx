@@ -14,6 +14,7 @@ import { LanguageProvider } from '@/contexts/LanguageContext.jsx';
 import { Header } from '@/components/Header.jsx';
 import { CookieConsent } from '@/components/CookieConsent.jsx';
 import { isNativeApp } from '@/lib/platform.js';
+import { Toaster } from 'sonner';
 
 function SiteFooter() {
   return (
@@ -92,6 +93,7 @@ function App() {
           </div>
           <SiteFooter />
           <CookieConsent />
+          <Toaster position={isNativeApp() ? 'bottom-center' : 'top-center'} />
         </div>
       </Router>
     </LanguageProvider>
