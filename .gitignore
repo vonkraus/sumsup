@@ -14,3 +14,5 @@ sumsup-release.keystore
 *.p12.b64
 .DS_Store
 **/.DS_Store
+apps/web/ios/outputs/
+apps/web/android/app/build/outputs/bundle/release/*.aab
