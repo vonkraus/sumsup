@@ -36,9 +36,9 @@
 
 | Platform | Status | Download |
 |----------|:------:|----------|
-| 🌐 Web | ✅ Live | Visit the live site |
+| 🌐 Web | ✅ Live | [Visit the live site](https://sumsupbudgetcalc.com) |
 | 🍎 macOS (Apple Silicon) | ✅ Available | [Latest .dmg](https://github.com/vonkraus/sumsup/releases/latest) |
 | 🍎 macOS (Intel) | ✅ Available | [Latest .dmg](https://github.com/vonkraus/sumsup/releases/latest) |
 | 🪟 Windows (x64) | ✅ Available | [Latest .exe](https://github.com/vonkraus/sumsup/releases/latest) |
-| 🤖 Android | 🚧 Planned | — |
-| 📱 iOS / iPadOS | 🚧 Planned | — |
+| 🤖 Android | 🔍 In Review | — |
+| 📱 iOS / iPadOS | 🔍 In Review | — |
