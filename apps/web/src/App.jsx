@@ -11,6 +11,7 @@ import BlogPage from '@/pages/BlogPage.jsx';
 import ArticlePage from '@/pages/ArticlePage.jsx';
 import HomePage from '@/pages/HomePage.jsx';
 import { LanguageProvider } from '@/contexts/LanguageContext.jsx';
+import { ThemeProvider } from '@/contexts/ThemeContext.jsx';
 import { Header } from '@/components/Header.jsx';
 import { CookieConsent } from '@/components/CookieConsent.jsx';
 import { isNativeApp } from '@/lib/platform.js';
@@ -66,6 +67,7 @@ function SiteFooter() {
 
 function App() {
   return (
+    <ThemeProvider>
     <LanguageProvider>
       <Router>
         <ScrollToTop />
@@ -97,6 +99,7 @@ function App() {
         </div>
       </Router>
     </LanguageProvider>
+    </ThemeProvider>
   );
 }
 

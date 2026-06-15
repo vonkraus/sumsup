@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LanguageSelector } from '@/components/LanguageSelector.jsx';
 import { useLanguage } from '@/contexts/LanguageContext.jsx';
+import { useTheme } from '@/contexts/ThemeContext.jsx';
 import { cn } from '@/lib/utils.js';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 
 export function Header() {
   const { t } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { theme, toggle: toggleTheme } = useTheme();
 
   useEffect(() => {
     setMobileOpen(false);
@@ -74,6 +76,13 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           <LanguageSelector />
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </button>
           <button
             className="md:hidden p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
             onClick={() => setMobileOpen(o => !o)}
