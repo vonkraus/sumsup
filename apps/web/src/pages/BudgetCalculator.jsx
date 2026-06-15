@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { DOWNLOAD_URLS } from '@/lib/release.js';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import IncomeInput from '@/components/IncomeInput.jsx';
 import AddCategoryForm from '@/components/AddCategoryForm.jsx';
 import CategoryList from '@/components/CategoryList.jsx';
@@ -37,6 +37,15 @@ const INITIAL_CATEGORIES = [
 function BudgetCalculator() {
   useCanonicalTag();
   const { t } = useLanguage();
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (hash === '#downloads') {
+      setTimeout(() => {
+        document.getElementById('downloads')?.scrollIntoView({ behavior: 'smooth' });
+      }, 50);
+    }
+  }, [hash]);
   const [income, setIncome] = useState(0);
   const [incomePeriod, setIncomePeriod] = useState('monthly');
   const [incomeType, setIncomeType] = useState('Salary');
