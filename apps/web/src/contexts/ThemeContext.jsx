@@ -2,6 +2,16 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext(null);
 
+async function syncStatusBar(theme) {
+  try {
+    if (!window.Capacitor?.isNativePlatform?.()) return;
+    const { StatusBar, Style } = await import('@capacitor/status-bar');
+    await StatusBar.setStyle({ style: theme === 'dark' ? Style.Dark : Style.Light });
+  } catch {
+    // StatusBar unavailable on this platform
+  }
+}
+
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     const stored = localStorage.getItem('theme');
@@ -12,6 +22,7 @@ export function ThemeProvider({ children }) {
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
     localStorage.setItem('theme', theme);
+    syncStatusBar(theme);
   }, [theme]);
 
   const toggle = () => setTheme(t => t === 'dark' ? 'light' : 'dark');
