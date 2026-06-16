@@ -5,7 +5,6 @@ import { useLanguage } from '@/contexts/LanguageContext.jsx';
 import { useTheme } from '@/contexts/ThemeContext.jsx';
 import { cn } from '@/lib/utils.js';
 import { Menu, X, Sun, Moon } from 'lucide-react';
-import { isNativeApp } from '@/lib/platform.js';
 
 export function Header() {
   const { t } = useLanguage();
@@ -66,14 +65,12 @@ export function Header() {
                 {label}
               </Link>
             ))}
-            {!isNativeApp() && (
-              <button
-                onClick={handleDownloadClick}
-                className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground"
-              >
-                Download
-              </button>
-            )}
+            <button
+              onClick={handleDownloadClick}
+              className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground"
+            >
+              Download
+            </button>
           </nav>
         </div>
 
@@ -111,14 +108,12 @@ export function Header() {
                 {label}
               </Link>
             ))}
-            {!isNativeApp() && (
-              <button
-                onClick={handleDownloadClick}
-                className="px-3 py-2 rounded-md text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground text-left"
-              >
-                Download
-              </button>
-            )}
+            <button
+              onClick={handleDownloadClick}
+              className="px-3 py-2 rounded-md text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground text-left"
+            >
+              Download
+            </button>
           </nav>
         </div>
       )}
