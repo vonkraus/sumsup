@@ -9,6 +9,19 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
+  check-platform-leaks:
+    runs-on: ubuntu-latest
+    name: Check for platform-leak strings
+    # Informational only — surfaces mentions of other platforms (Android, Windows, etc.)
+    # in the web app source for a human glance before release. Doesn't fail the build,
+    # since legitimate gated mentions (behind isNativeApp()) will always trigger a hit.
+    # See scripts/check-platform-leaks.sh and commit 92de9f9 (Apple 2.3.10 rejection fix).
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run check
+        run: npm run check:platform-leaks
+
   desktop:
     strategy:
       fail-fast: false
