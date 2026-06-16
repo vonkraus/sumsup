@@ -23,7 +23,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button.jsx';
 import { useLanguage } from '@/contexts/LanguageContext.jsx';
 import { useCanonicalTag } from '@/hooks/useCanonicalTag.js';
-import { isNativeApp } from '@/lib/platform.js';
 
 const INITIAL_CATEGORIES = [
   { id: 'housing', name: 'Housing', amount: 0, group: 'NEEDS', billingPeriod: 'monthly' },
@@ -41,9 +40,16 @@ function BudgetCalculator() {
 
   useEffect(() => {
     if (hash === '#downloads') {
-      setTimeout(() => {
-        document.getElementById('downloads')?.scrollIntoView({ behavior: 'smooth' });
-      }, 50);
+      // Wait a frame for layout to commit, then give the section's entrance
+      // animation (0.6s delay + transform) time to settle before scrolling,
+      // so the final scroll position lands on the section's resting spot
+      // rather than mid-animation.
+      const raf = requestAnimationFrame(() => {
+        setTimeout(() => {
+          document.getElementById('downloads')?.scrollIntoView({ behavior: 'smooth' });
+        }, 700);
+      });
+      return () => cancelAnimationFrame(raf);
     }
   }, [hash]);
   const [income, setIncome] = useState(0);
@@ -380,10 +386,7 @@ function BudgetCalculator() {
             </motion.div>
 
 
-            {/* Download Section — hidden inside native app wrappers (iOS/Android/desktop), since
-                third-party platform links and badges aren't relevant to users already in the app */}
-            {!isNativeApp() && (
-              <motion.div
+            <motion.div
                 id="downloads"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -419,7 +422,6 @@ function BudgetCalculator() {
                   </div>
                 </div>
               </motion.div>
-            )}
           </div>
         </div>
       </div>
