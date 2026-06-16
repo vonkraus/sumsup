@@ -8,7 +8,6 @@ import { Card, CardContent } from '@/components/ui/card.jsx';
 import { ArrowRight, PieChart, Download, ShieldCheck, Calculator, Monitor, Laptop, Smartphone, Tablet } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useCanonicalTag } from '@/hooks/useCanonicalTag.js';
-import { isNativeApp } from '@/lib/platform.js';
 
 const HomePage = () => {
   useCanonicalTag();
@@ -163,10 +162,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-      {/* Download Section — hidden inside native app wrappers (iOS/Android/desktop), since
-          third-party platform links and badges aren't relevant to users already in the app */}
-      {!isNativeApp() && (
-        <section className="py-24 bg-muted/30 border-t border-border/50 relative z-20">
+      <section id="downloads" className="py-24 bg-muted/30 border-t border-border/50 relative z-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} viewport={{ once: true }} className="space-y-6">
@@ -198,7 +194,6 @@ const HomePage = () => {
             </div>
           </div>
         </section>
-      )}
 
     </main>
   );
