@@ -19,3 +19,4 @@ sumsup-release.keystore
 **/.DS_Store
 apps/web/ios/outputs/
 apps/web/android/app/build/outputs/bundle/release/*.aab
+/.idea/
