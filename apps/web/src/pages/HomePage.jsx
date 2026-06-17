@@ -8,6 +8,7 @@ import { Card, CardContent } from '@/components/ui/card.jsx';
 import { ArrowRight, PieChart, Download, ShieldCheck, Calculator, Monitor, Laptop, Smartphone, Tablet } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useCanonicalTag } from '@/hooks/useCanonicalTag.js';
+import { isNativeApp } from '@/lib/platform.js';
 
 const HomePage = () => {
   useCanonicalTag();
@@ -162,6 +163,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+      {!isNativeApp() && (
       <section id="downloads" className="py-24 bg-muted/30 border-t border-border/50 relative z-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -194,6 +196,7 @@ const HomePage = () => {
             </div>
           </div>
         </section>
+      )}
 
     </main>
   );
