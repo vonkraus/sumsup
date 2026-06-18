@@ -179,7 +179,7 @@ const HomePage = () => {
                 <div className="space-y-3">
                   <p className="text-xs font-semibold tracking-widest text-muted-foreground uppercase">Mobile</p>
                   <div className="flex gap-3">
-                    <div className="relative flex flex-col items-center gap-2 p-4 rounded-2xl border border-border/60 bg-card opacity-60 w-24 cursor-not-allowed"><Smartphone className="h-8 w-8 text-muted-foreground" /><span className="text-xs text-muted-foreground">Android</span><span className="absolute -top-2 -right-2 text-[10px] bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full font-medium">Soon</span></div>
+                    <a href={DOWNLOAD_URLS.android} target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-2 p-4 rounded-2xl border border-border/60 bg-card hover:border-primary/50 hover:shadow-md transition-all duration-200 w-24" title="Get it on Google Play"><Smartphone className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors" /><span className="text-xs text-muted-foreground group-hover:text-foreground transition-colors">Android</span></a>
                     <div className="relative flex flex-col items-center gap-2 p-4 rounded-2xl border border-border/60 bg-card opacity-60 w-24 cursor-not-allowed"><Tablet className="h-8 w-8 text-muted-foreground" /><span className="text-xs text-muted-foreground">iOS</span><span className="absolute -top-2 -right-2 text-[10px] bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full font-medium">Soon</span></div>
                   </div>
                 </div>
