@@ -417,10 +417,8 @@ function BudgetCalculator() {
                     <h2 className="text-2xl font-semibold text-foreground">Available for free on <span className="text-primary">all your devices</span></h2>
                     <p className="text-muted-foreground">Budget smarter on desktop or mobile. No account needed, no data stored.</p>
                     <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-                      <a href={DOWNLOAD_URLS.windows} className="inline-flex items-center justify-center h-11 px-6 rounded-full bg-primary text-primary-foreground font-medium hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-md whitespace-nowrap"><Monitor className="mr-2 h-4 w-4" />Download for Windows</a>
-                      <a href="https://github.com/vonkraus/sumsup/releases/latest" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center h-11 px-6 rounded-full border border-border bg-background text-foreground font-medium hover:border-primary/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 whitespace-nowrap">All releases<ArrowRight className="ml-2 h-4 w-4" /></a>
+                      <a href="https://github.com/vonkraus/sumsup/releases/latest" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center h-11 px-6 rounded-full bg-primary text-primary-foreground font-medium hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-md whitespace-nowrap">All releases<ArrowRight className="ml-2 h-4 w-4" /></a>
                     </div>
-                    <p className="text-xs text-muted-foreground">macOS: right-click the app and click Open if you see a security warning.</p>
                   </div>
                 </div>
               </motion.div>

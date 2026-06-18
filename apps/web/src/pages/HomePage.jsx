@@ -188,10 +188,8 @@ const HomePage = () => {
                 <h2 className="text-3xl md:text-4xl font-bold text-foreground" style={{ letterSpacing: '-0.02em' }}>Available for free on <span className="text-primary">all your devices</span></h2>
                 <p className="text-lg text-muted-foreground leading-relaxed">Budget smarter whether you are on desktop or mobile. No account needed, no data stored.</p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-                  <a href={DOWNLOAD_URLS.windows} className="inline-flex items-center justify-center h-12 px-8 rounded-full bg-primary text-primary-foreground font-medium hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-lg"><Download className="mr-2 h-4 w-4" />Download Now</a>
-                  <a href="https://github.com/vonkraus/sumsup/releases/latest" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center h-12 px-8 rounded-full border border-border bg-background text-foreground font-medium hover:border-primary/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">All releases<ArrowRight className="ml-2 h-4 w-4" /></a>
+                  <a href="https://github.com/vonkraus/sumsup/releases/latest" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center h-12 px-8 rounded-full bg-primary text-primary-foreground font-medium hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-lg">All releases<ArrowRight className="ml-2 h-4 w-4" /></a>
                 </div>
-                <p className="text-xs text-muted-foreground">macOS users: If you see a security warning, right-click the app and click Open to launch.</p>
               </motion.div>
             </div>
           </div>
