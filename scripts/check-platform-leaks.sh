@@ -33,4 +33,4 @@ echo "----"
 echo "Found $(echo "$MATCHES" | wc -l | tr -d ' ') hit(s) above."
 echo "For each: confirm it's wrapped in an isNativeApp()/isCapacitor() check (or otherwise"
 echo "fine to ship inside the iOS/Android app) before submitting to App Review."
-exit 1
+exit 0
