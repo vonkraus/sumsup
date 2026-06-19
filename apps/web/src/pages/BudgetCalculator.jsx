@@ -24,6 +24,7 @@ import { Button } from '@/components/ui/button.jsx';
 import { useLanguage } from '@/contexts/LanguageContext.jsx';
 import { useCanonicalTag } from '@/hooks/useCanonicalTag.js';
 import { isNativeApp } from '@/lib/platform.js';
+import { saveSnapshot, getAllSnapshots, currentMonthKey } from '@/lib/budgetHistory.js';
 
 const INITIAL_CATEGORIES = [
   { id: 'housing', name: 'Housing', amount: 0, group: 'NEEDS', billingPeriod: 'monthly' },
@@ -34,17 +35,6 @@ const INITIAL_CATEGORIES = [
   { id: 'emergency', name: 'Emergency Fund', amount: 0, group: 'SAVINGS', billingPeriod: 'monthly' }
 ];
 
-const SESSION_KEY = 'sumsup_budget_session';
-
-function loadSession() {
-  try {
-    const saved = sessionStorage.getItem(SESSION_KEY);
-    return saved ? JSON.parse(saved) : null;
-  } catch {
-    return null;
-  }
-}
-
 function BudgetCalculator() {
   useCanonicalTag();
   const { t } = useLanguage();
@@ -52,10 +42,6 @@ function BudgetCalculator() {
 
   useEffect(() => {
     if (hash === '#downloads') {
-      // Wait a frame for layout to commit, then give the section's entrance
-      // animation (0.6s delay + transform) time to settle before scrolling,
-      // so the final scroll position lands on the section's resting spot
-      // rather than mid-animation.
       const raf = requestAnimationFrame(() => {
         setTimeout(() => {
           document.getElementById('downloads')?.scrollIntoView({ behavior: 'smooth' });
@@ -64,19 +50,43 @@ function BudgetCalculator() {
       return () => cancelAnimationFrame(raf);
     }
   }, [hash]);
-  const _session = loadSession();
-  const [income, setIncome] = useState(_session?.income ?? 0);
-  const [incomePeriod, setIncomePeriod] = useState(_session?.incomePeriod ?? 'monthly');
-  const [incomeType, setIncomeType] = useState(_session?.incomeType ?? 'Salary');
-  const [categories, setCategories] = useState(_session?.categories ?? INITIAL_CATEGORIES);
-  const [spreadsheetName, setSpreadsheetName] = useState(_session?.spreadsheetName ?? '');
-  const [incomeResetKey, setIncomeResetKey] = useState(0);
 
+  const [income, setIncome] = useState(0);
+  const [incomePeriod, setIncomePeriod] = useState('monthly');
+  const [incomeType, setIncomeType] = useState('Salary');
+  const [categories, setCategories] = useState(INITIAL_CATEGORIES);
+  const [spreadsheetName, setSpreadsheetName] = useState('');
+  const [incomeResetKey, setIncomeResetKey] = useState(0);
+  const [snapshots, setSnapshots] = useState(() => getAllSnapshots());
+
+  // Auto-save snapshot whenever there's a name
   useEffect(() => {
-    try {
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ income, incomePeriod, incomeType, categories, spreadsheetName }));
-    } catch {}
+    if (!spreadsheetName.trim()) return;
+    const timer = setTimeout(() => {
+      saveSnapshot(currentMonthKey(), { income, incomePeriod, incomeType, categories, spreadsheetName });
+      setSnapshots(getAllSnapshots());
+    }, 800);
+    return () => clearTimeout(timer);
   }, [income, incomePeriod, incomeType, categories, spreadsheetName]);
+
+  const handleNewBudgetName = (name) => {
+    setSpreadsheetName(name);
+    setIncome(0);
+    setIncomePeriod('monthly');
+    setIncomeType('Salary');
+    setCategories(INITIAL_CATEGORIES);
+    setIncomeResetKey(k => k + 1);
+  };
+
+  const handleLoadSnapshot = (snapshot) => {
+    setIncome(snapshot.income ?? 0);
+    setIncomePeriod(snapshot.incomePeriod ?? 'monthly');
+    setIncomeType(snapshot.incomeType ?? 'Salary');
+    setCategories(snapshot.categories ?? INITIAL_CATEGORIES);
+    setSpreadsheetName(snapshot.spreadsheetName ?? '');
+    setIncomeResetKey(k => k + 1);
+    toast.success(`Loaded "${snapshot.spreadsheetName || snapshot.monthKey}"`);
+  };
 
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isImportPreviewOpen, setIsImportPreviewOpen] = useState(false);
@@ -225,19 +235,8 @@ function BudgetCalculator() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-12 relative"
+            className="text-center mb-12"
           >
-            <div className="absolute top-0 right-0 hidden sm:block">
-              <Button 
-                variant="outline" 
-                onClick={() => setIsImportModalOpen(true)}
-                className="bg-background"
-              >
-                <DownloadCloud className="w-4 h-4 mr-2" />
-                Import Budget
-              </Button>
-            </div>
-            
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="rounded-2xl bg-card border shadow-sm p-3">
                 <Calculator className="h-8 w-8 text-primary" />
@@ -260,23 +259,15 @@ function BudgetCalculator() {
                 <span className="sm:hidden">{t('app.features.export.mobile')}</span>
               </li>
             </ul>
-            
-            <div className="mt-6 sm:hidden">
-              <Button 
-                variant="outline" 
-                onClick={() => setIsImportModalOpen(true)}
-                className="bg-background w-full"
-              >
-                <DownloadCloud className="w-4 h-4 mr-2" />
-                Import Budget
-              </Button>
-            </div>
           </motion.header>
 
           <div className="space-y-8">
-            <SpreadsheetNameInput 
+            <SpreadsheetNameInput
               name={spreadsheetName}
-              onChange={setSpreadsheetName}
+              onNewBudget={handleNewBudgetName}
+              snapshots={snapshots}
+              onLoadSnapshot={handleLoadSnapshot}
+              onDeleted={() => setSnapshots(getAllSnapshots())}
             />
 
             <IncomeInput 
@@ -347,19 +338,19 @@ function BudgetCalculator() {
                   </p>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
-                  <ExcelExporter 
-                    income={monthlyIncome} 
-                    categories={normalizedMonthlyCategories} 
+                  <ExcelExporter
+                    income={monthlyIncome}
+                    categories={normalizedMonthlyCategories}
                     spreadsheetName={spreadsheetName}
                   />
-                  <GoogleSheetsExporter 
-                    income={monthlyIncome} 
-                    categories={normalizedMonthlyCategories} 
+                  <GoogleSheetsExporter
+                    income={monthlyIncome}
+                    categories={normalizedMonthlyCategories}
                     spreadsheetName={spreadsheetName}
                   />
-                  <AppleNumbersExporter 
-                    income={monthlyIncome} 
-                    categories={normalizedMonthlyCategories} 
+                  <AppleNumbersExporter
+                    income={monthlyIncome}
+                    categories={normalizedMonthlyCategories}
                     spreadsheetName={spreadsheetName}
                   />
                   <JsonExporter
@@ -368,6 +359,16 @@ function BudgetCalculator() {
                     categories={normalizedMonthlyCategories}
                     spreadsheetName={spreadsheetName}
                   />
+                </div>
+                <div className="border-t border-border/60 pt-4">
+                  <Button
+                    variant="outline"
+                    onClick={() => setIsImportModalOpen(true)}
+                    className="w-full sm:w-auto"
+                  >
+                    <DownloadCloud className="w-4 h-4 mr-2" />
+                    Import Budget
+                  </Button>
                 </div>
               </motion.div>
             )}
@@ -458,14 +459,15 @@ function BudgetCalculator() {
         onDataReady={handleDataReadyForImport} 
       />
 
-      <ImportPreview 
-        isOpen={isImportPreviewOpen} 
-        onOpenChange={setIsImportPreviewOpen} 
-        data={pendingImportData} 
-        onConfirm={confirmImport} 
+      <ImportPreview
+        isOpen={isImportPreviewOpen}
+        onOpenChange={setIsImportPreviewOpen}
+        data={pendingImportData}
+        onConfirm={confirmImport}
       />
 
-    </>
+
+</>
   );
 }
 
