@@ -15,5 +15,8 @@
   },
   "workspaces": [
     "apps/*"
-  ]
+  ],
+  "dependencies": {
+    "@capacitor/app": "^8.1.0"
+  }
 }

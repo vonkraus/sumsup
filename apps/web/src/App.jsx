@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes, BrowserRouter as Router, Link } from 'react-router-dom';
 import ScrollToTop from '@/components/ScrollToTop.jsx';
 import BudgetCalculator from '@/pages/BudgetCalculator.jsx';
@@ -14,7 +14,7 @@ import { LanguageProvider } from '@/contexts/LanguageContext.jsx';
 import { ThemeProvider } from '@/contexts/ThemeContext.jsx';
 import { Header } from '@/components/Header.jsx';
 import { CookieConsent } from '@/components/CookieConsent.jsx';
-import { isNativeApp } from '@/lib/platform.js';
+import { isNativeApp, isCapacitor } from '@/lib/platform.js';
 import { Toaster } from 'sonner';
 
 function SiteFooter() {
@@ -66,6 +66,21 @@ function SiteFooter() {
 }
 
 function App() {
+  useEffect(() => {
+    if (!isCapacitor()) return;
+    let handle;
+    import('@capacitor/app').then(({ App: CapApp }) => {
+      handle = CapApp.addListener('backButton', ({ canGoBack }) => {
+        if (canGoBack) {
+          window.history.back();
+        } else {
+          CapApp.exitApp();
+        }
+      });
+    });
+    return () => { handle?.then?.(h => h.remove()); };
+  }, []);
+
   return (
     <ThemeProvider>
     <LanguageProvider>
