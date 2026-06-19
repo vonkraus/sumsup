@@ -34,6 +34,17 @@ const INITIAL_CATEGORIES = [
   { id: 'emergency', name: 'Emergency Fund', amount: 0, group: 'SAVINGS', billingPeriod: 'monthly' }
 ];
 
+const SESSION_KEY = 'sumsup_budget_session';
+
+function loadSession() {
+  try {
+    const saved = sessionStorage.getItem(SESSION_KEY);
+    return saved ? JSON.parse(saved) : null;
+  } catch {
+    return null;
+  }
+}
+
 function BudgetCalculator() {
   useCanonicalTag();
   const { t } = useLanguage();
@@ -53,12 +64,19 @@ function BudgetCalculator() {
       return () => cancelAnimationFrame(raf);
     }
   }, [hash]);
-  const [income, setIncome] = useState(0);
-  const [incomePeriod, setIncomePeriod] = useState('monthly');
-  const [incomeType, setIncomeType] = useState('Salary');
-  const [categories, setCategories] = useState(INITIAL_CATEGORIES);
-  const [spreadsheetName, setSpreadsheetName] = useState('');
+  const _session = loadSession();
+  const [income, setIncome] = useState(_session?.income ?? 0);
+  const [incomePeriod, setIncomePeriod] = useState(_session?.incomePeriod ?? 'monthly');
+  const [incomeType, setIncomeType] = useState(_session?.incomeType ?? 'Salary');
+  const [categories, setCategories] = useState(_session?.categories ?? INITIAL_CATEGORIES);
+  const [spreadsheetName, setSpreadsheetName] = useState(_session?.spreadsheetName ?? '');
   const [incomeResetKey, setIncomeResetKey] = useState(0);
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ income, incomePeriod, incomeType, categories, spreadsheetName }));
+    } catch {}
+  }, [income, incomePeriod, incomeType, categories, spreadsheetName]);
 
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isImportPreviewOpen, setIsImportPreviewOpen] = useState(false);

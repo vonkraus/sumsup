@@ -200,7 +200,7 @@ function CategoryRow({ category, totalMonthlyExpenses, onUpdateAmount, onUpdateN
               step="0.01"
               value={localAmount}
               onChange={handleAmountChange}
-              className="w-24 pl-6 text-right h-9 text-sm bg-background"
+              className="w-24 pl-6 text-right h-9 text-sm bg-background dark:bg-muted dark:border-border"
               placeholder="0.00"
             />
           </div>
