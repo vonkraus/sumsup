@@ -1,5 +1,12 @@
 # Release Notes
 
+## v2.3 — 2026-06-19
+
+### Added
+- "Visit our website" link in the app header (iOS and Android) — opens sumsupbudgetcalc.com in the system browser
+
+---
+
 ## v2.0 — 2026-06-18
 
 ### Added

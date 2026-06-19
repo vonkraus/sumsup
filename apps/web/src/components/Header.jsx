@@ -4,7 +4,7 @@ import { LanguageSelector } from '@/components/LanguageSelector.jsx';
 import { useLanguage } from '@/contexts/LanguageContext.jsx';
 import { useTheme } from '@/contexts/ThemeContext.jsx';
 import { cn } from '@/lib/utils.js';
-import { Menu, X, Sun, Moon } from 'lucide-react';
+import { Menu, X, Sun, Moon, ExternalLink } from 'lucide-react';
 import { isNativeApp } from '@/lib/platform.js';
 
 export function Header() {
@@ -74,6 +74,16 @@ export function Header() {
                 Download
               </button>
             )}
+            {isNativeApp() && (
+              <a
+                href="https://sumsupbudgetcalc.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground inline-flex items-center gap-1"
+              >
+                Visit our website <ExternalLink className="h-3 w-3" />
+              </a>
+            )}
           </nav>
         </div>
 
@@ -118,6 +128,16 @@ export function Header() {
               >
                 Download
               </button>
+            )}
+            {isNativeApp() && (
+              <a
+                href="https://sumsupbudgetcalc.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-2 rounded-md text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground inline-flex items-center gap-1"
+              >
+                Visit our website <ExternalLink className="h-3 w-3" />
+              </a>
             )}
           </nav>
         </div>
