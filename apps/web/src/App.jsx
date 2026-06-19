@@ -81,6 +81,47 @@ function App() {
     return () => { handle?.then?.(h => h.remove()); };
   }, []);
 
+  // Android WebView has no native swipe-back gesture (unlike iOS WKWebView with
+  // allowsBackForwardNavigationGestures). Detect a left-edge rightward swipe and
+  // call history.back() to match the iOS behaviour.
+  useEffect(() => {
+    if (!isCapacitor() || window.Capacitor?.getPlatform() !== 'android') return;
+    const EDGE_THRESHOLD = 30;  // px from left edge to start tracking
+    const MIN_SWIPE_X = 60;     // minimum horizontal travel to count as a swipe
+    const MAX_SWIPE_Y = 80;     // maximum vertical drift allowed
+
+    let startX = null;
+    let startY = null;
+
+    const onTouchStart = (e) => {
+      const touch = e.touches[0];
+      if (touch.clientX <= EDGE_THRESHOLD) {
+        startX = touch.clientX;
+        startY = touch.clientY;
+      } else {
+        startX = null;
+      }
+    };
+
+    const onTouchEnd = (e) => {
+      if (startX === null) return;
+      const touch = e.changedTouches[0];
+      const dx = touch.clientX - startX;
+      const dy = Math.abs(touch.clientY - startY);
+      if (dx >= MIN_SWIPE_X && dy <= MAX_SWIPE_Y) {
+        window.history.back();
+      }
+      startX = null;
+    };
+
+    document.addEventListener('touchstart', onTouchStart, { passive: true });
+    document.addEventListener('touchend', onTouchEnd, { passive: true });
+    return () => {
+      document.removeEventListener('touchstart', onTouchStart);
+      document.removeEventListener('touchend', onTouchEnd);
+    };
+  }, []);
+
   return (
     <ThemeProvider>
     <LanguageProvider>
