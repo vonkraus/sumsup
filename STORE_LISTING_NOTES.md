@@ -1,4 +1,253 @@
 <en-US>
+Sums Up v2.0 update:
+- Swipe to go back between pages
+- Budget data now stays for your whole session
+- Dollar amount fields easier to see in dark mode
+</en-US>
+<en-GB>
+Sums Up v2.0 update:
+- Swipe to go back between pages
+- Budget data now stays for your whole session
+- Dollar amount fields easier to see in dark mode
+</en-GB>
+<en-AU>
+Sums Up v2.0 update:
+- Swipe to go back between pages
+- Budget data now stays for your whole session
+- Dollar amount fields easier to see in dark mode
+</en-AU>
+<es-ES>
+Actualización de Sums Up v2.0:
+- Desliza para volver entre páginas
+- Los datos del presupuesto se mantienen durante toda la sesión
+- Los campos de importe son más visibles en modo oscuro
+</es-ES>
+<es-419>
+Actualización de Sums Up v2.0:
+- Desliza para volver entre páginas
+- Los datos del presupuesto se conservan durante toda la sesión
+- Los campos de monto son más fáciles de ver en modo oscuro
+</es-419>
+<pt-BR>
+Atualização do Sums Up v2.0:
+- Deslize para voltar entre páginas
+- Os dados do orçamento agora ficam durante toda a sessão
+- Campos de valor mais fáceis de ver no modo escuro
+</pt-BR>
+<pt-PT>
+Atualização do Sums Up v2.0:
+- Deslize para navegar entre páginas
+- Os dados do orçamento mantêm-se durante toda a sessão
+- Campos de valor mais visíveis no modo escuro
+</pt-PT>
+<fr-FR>
+Mise à jour Sums Up v2.0 :
+- Glissez pour revenir entre les pages
+- Les données du budget sont conservées pendant toute la session
+- Champs de montant plus visibles en mode sombre
+</fr-FR>
+<de-DE>
+Sums Up Update v2.0:
+- Wischen zum Zurücknavigieren zwischen Seiten
+- Budgetdaten bleiben während der gesamten Sitzung erhalten
+- Betragsfelder im Dunkelmodus besser sichtbar
+</de-DE>
+<it-IT>
+Aggiornamento Sums Up v2.0:
+- Scorri per tornare tra le pagine
+- I dati del budget rimangono per tutta la sessione
+- Campi importo più visibili in modalità scura
+</it-IT>
+<ru-RU>
+Обновление Sums Up v2.0:
+- Смахните, чтобы вернуться между страницами
+- Данные бюджета сохраняются в течение всей сессии
+- Поля сумм лучше видны в тёмном режиме
+</ru-RU>
+<ar>
+تحديث Sums Up الإصدار 2.0:
+- اسحب للعودة بين الصفحات
+- تبقى بيانات الميزانية طوال فترة الجلسة
+- حقول المبالغ أوضح في الوضع الداكن
+</ar>
+<ja-JP>
+Sums Up v2.0 アップデート:
+- スワイプでページを戻れるように
+- セッション中ずっと予算データが保持されるように
+- ダークモードでの金額入力フィールドが見やすく改善
+</ja-JP>
+<ko-KR>
+Sums Up v2.0 업데이트:
+- 스와이프로 이전 페이지로 돌아가기
+- 앱을 완전히 닫을 때까지 예산 데이터 유지
+- 다크 모드에서 금액 입력 필드 가시성 개선
+</ko-KR>
+<zh-CN>
+Sums Up v2.0 更新:
+- 滑动手势返回上一页
+- 预算数据在整个会话期间保持不变
+- 深色模式下金额输入框更清晰可见
+</zh-CN>
+<zh-TW>
+Sums Up v2.0 更新:
+- 滑動手勢返回上一頁
+- 預算資料在整個工作階段中保留
+- 深色模式下金額輸入欄位更清晰
+</zh-TW>
+<zh-HK>
+Sums Up v2.0 更新:
+- 滑動返回上一頁
+- 預算數據在整個會話期間保留
+- 深色模式下金額欄位更易查看
+</zh-HK>
+<hi-IN>
+Sums Up v2.0 अपडेट:
+- पृष्ठों के बीच वापस जाने के लिए स्वाइप करें
+- पूरे सत्र के दौरान बजट डेटा बना रहता है
+- डार्क मोड में राशि फ़ील्ड अधिक स्पष्ट
+</hi-IN>
+<id>
+Pembaruan Sums Up v2.0:
+- Geser untuk kembali antar halaman
+- Data anggaran tersimpan selama sesi berlangsung
+- Kolom jumlah lebih mudah dilihat dalam mode gelap
+</id>
+<ms>
+Kemas kini Sums Up v2.0:
+- Leret untuk kembali antara halaman
+- Data bajet kekal sepanjang sesi
+- Medan jumlah lebih mudah dilihat dalam mod gelap
+</ms>
+<nl-NL>
+Sums Up v2.0-update:
+- Veeg om terug te gaan tussen pagina's
+- Budgetgegevens blijven bewaard tijdens de hele sessie
+- Bedragvelden beter zichtbaar in donkere modus
+</nl-NL>
+<pl-PL>
+Aktualizacja Sums Up v2.0:
+- Przesuń, aby wrócić między stronami
+- Dane budżetu zachowywane przez całą sesję
+- Pola kwot lepiej widoczne w trybie ciemnym
+</pl-PL>
+<tr-TR>
+Sums Up v2.0 güncellemesi:
+- Sayfalar arasında geri gitmek için kaydırın
+- Bütçe verileri oturum boyunca korunur
+- Karanlık modda tutar alanları daha belirgin
+</tr-TR>
+<sv-SE>
+Sums Up v2.0-uppdatering:
+- Svep för att navigera tillbaka mellan sidor
+- Budgetdata behålls under hela sessionen
+- Beloppsfält lättare att se i mörkt läge
+</sv-SE>
+<no-NO>
+Sums Up v2.0-oppdatering:
+- Sveip for å gå tilbake mellom sider
+- Budsjettdata beholdes gjennom hele økten
+- Beløpsfelt lettere å se i mørk modus
+</no-NO>
+<da-DK>
+Sums Up v2.0-opdatering:
+- Stryg for at navigere tilbage mellem sider
+- Budgetdata bevares under hele sessionen
+- Beløbsfelter nemmere at se i mørk tilstand
+</da-DK>
+<fi-FI>
+Sums Up v2.0 -päivitys:
+- Pyyhkäise palataksesi sivujen välillä
+- Budjettitiedot säilyvät koko istunnon ajan
+- Summakenttät helpommin nähtävissä tummassa tilassa
+</fi-FI>
+<el-GR>
+Ενημέρωση Sums Up v2.0:
+- Σύρε για να επιστρέψεις μεταξύ σελίδων
+- Τα δεδομένα προϋπολογισμού παραμένουν καθ' όλη τη διάρκεια της συνεδρίας
+- Πεδία ποσών πιο ορατά σε σκοτεινή λειτουργία
+</el-GR>
+<cs-CZ>
+Aktualizace Sums Up v2.0:
+- Přejeďte prstem pro návrat mezi stránkami
+- Data rozpočtu zůstávají po celou dobu relace
+- Pole částek lépe viditelná v tmavém režimu
+</cs-CZ>
+<hu-HU>
+Sums Up v2.0 frissítés:
+- Csúsztasson a lapok közötti visszalépéshez
+- A költségvetési adatok megmaradnak az egész munkamenet alatt
+- Az összegmezők jobban láthatók sötét módban
+</hu-HU>
+<sr>
+Ažuriranje Sums Up v2.0:
+- Prevucite za povratak između stranica
+- Podaci budžeta ostaju tokom cele sesije
+- Polja iznosa lakše vidljiva u tamnom modu
+</sr>
+<th>
+อัปเดต Sums Up v2.0:
+- ปัดเพื่อกลับระหว่างหน้า
+- ข้อมูลงบประมาณคงอยู่ตลอดเซสชัน
+- ช่องจำนวนเงินมองเห็นชัดขึ้นในโหมดมืด
+</th>
+<bn-BD>
+Sums Up v2.0 আপডেট:
+- পৃষ্ঠার মধ্যে ফিরে যেতে সোয়াইপ করুন
+- পুরো সেশন জুড়ে বাজেটের ডেটা থাকে
+- ডার্ক মোডে পরিমাণ ক্ষেত্র আরও স্পষ্ট
+</bn-BD>
+<fa-IR>
+به‌روزرسانی Sums Up نسخه ۲.۰:
+- برای بازگشت بین صفحات بکشید
+- داده‌های بودجه در طول کل جلسه حفظ می‌شوند
+- فیلدهای مبلغ در حالت تاریک بهتر دیده می‌شوند
+</fa-IR>
+<sw>
+Sasisho la Sums Up v2.0:
+- Telezesha kurudi kati ya kurasa
+- Data ya bajeti inabaki wakati wote wa kikao
+- Sehemu za kiasi zinaonekana vizuri zaidi katika hali ya giza
+</sw>
+<fil>
+Update ng Sums Up v2.0:
+- Mag-swipe para bumalik sa pagitan ng mga pahina
+- Nananatili ang data ng budget sa buong session
+- Mas malinaw ang mga field ng halaga sa dark mode
+</fil>
+<az-AZ>
+Sums Up v2.0 yeniləməsi:
+- Səhifələr arasında geri getmək üçün sürüşdürün
+- Büdcə məlumatları bütün sessiya boyu saxlanılır
+- Qaranlıq rejimdə məbləğ sahələri daha yaxşı görünür
+</az-AZ>
+<ka-GE>
+Sums Up v2.0 განახლება:
+- გადაფურცლეთ გვერდებს შორის დასაბრუნებლად
+- საბიუჯეტო მონაცემები ინახება მთელი სესიის განმავლობაში
+- თანხის ველები უკეთ ჩანს მუქ რეჟიმში
+</ka-GE>
+<hy-AM>
+Sums Up v2.0 թարմացում:
+- Սահեցրեք էջերի միջև վերադառնալու համար
+- Բյուջեի տվյալները պահպանվում են ամբողջ նստաշրջանի ընթացքում
+- Գումարի դաշտերն ավելի տեսանելի են մուգ ռեժիմում
+</hy-AM>
+<mn-MN>
+Sums Up v2.0 шинэчлэлт:
+- Хуудасны хооронд буцахын тулд шударна уу
+- Төсвийн өгөгдөл бүх сессийн турш хадгалагдана
+- Харанхуй горимд дүнгийн талбарууд илүү тодорхой харагдана
+</mn-MN>
+<ne-NP>
+Sums Up v2.0 अपडेट:
+- पृष्ठहरू बीच फर्कन स्वाइप गर्नुहोस्
+- बजेट डेटा पूरै सत्रभरि रहन्छ
+- डार्क मोडमा रकम फिल्डहरू अझ स्पष्ट
+</ne-NP>
+
+---
+
+<en-US>
 Sums Up v1.25 update:
 - New light/dark theme toggle
 - New mobile menu for easier navigation

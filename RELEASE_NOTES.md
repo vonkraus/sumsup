@@ -1,5 +1,21 @@
 # Release Notes
 
+## v2.0 — 2026-06-18
+
+### Added
+- Swipe gesture to navigate back between pages on iOS and Android
+
+### Improved
+- Budget data now persists for the entire session — data only clears when you fully close the app from the app switcher
+- Dark mode: dollar amount input fields are now clearly visible in categories section
+
+---
+
+### Store listing blurb (for Play Store / App Store submission)
+> Swipe to go back between pages, your budget data now stays put while the app is open, and dollar amount fields are easier to see in dark mode.
+
+---
+
 ## v1.25 — 2026-06-15
 
 ### Added
