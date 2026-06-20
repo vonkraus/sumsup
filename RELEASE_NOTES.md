@@ -1,5 +1,21 @@
 # Release Notes
 
+## v2.7 — 2026-06-19
+
+### Improved
+- **Fresh start every time** — the app now opens with a clean slate. No income, no category amounts, no leftover name from last time. Your saved budgets are right there waiting; just tap the one you want.
+- **New budget name, new budget** — typing a name into the budget name field now resets the form completely. Existing saved budgets aren't affected — starting fresh is genuinely fresh.
+
+### The thinking behind it
+Saved budgets should feel like files you open, not state that lingers. The earlier behavior — where the app restored whatever you last had open — made it easy to accidentally edit a saved budget without realizing it. Now the app makes the distinction clear: open a saved budget intentionally, or start a new one from zero.
+
+---
+
+### Store listing blurb (for Play Store / App Store submission)
+> The app now opens to a clean slate every time — no leftover data from your last session. Tap a saved budget to load it, or type a new name to start fresh. Your saved budgets are always a tap away and load exactly as you left them.
+
+---
+
 ## v2.5 — 2026-06-19
 
 ### Added
