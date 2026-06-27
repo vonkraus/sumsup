@@ -1,7 +1,7 @@
 {
   "$schema": "../../../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Sums Up",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "identifier": "com.sumsup.app",
   "build": {
     "frontendDist": "../../../dist/apps/web",
@@ -42,8 +42,11 @@
     },
     "windows": {
       "webviewInstallMode": {
-        "type": "downloadBootstrapper"
+        "type": "skip"
       }
+    },
+    "nsis": {
+      "installMode": "currentUser"
     }
   }
 }
