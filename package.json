@@ -10,7 +10,7 @@
     "check:platform-leaks": "bash scripts/check-platform-leaks.sh"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.11.2",
+    "@tauri-apps/cli": "^2.11.3",
     "concurrently": "^9.1.2"
   },
   "workspaces": [
