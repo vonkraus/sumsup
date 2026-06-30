@@ -87,6 +87,7 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
   const { t } = useLanguage();
   const [inputValue, setInputValue] = useState(income > 0 ? String(income) : '');
   const [period, setPeriod] = useState(incomePeriod || 'monthly');
+  const [grossNet, setGrossNet] = useState('net');
   const [selectedState, setSelectedState] = useState('');
   const [payFrequency, setPayFrequency] = useState('monthly');
   const [error, setError] = useState('');
@@ -95,7 +96,6 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
     const taxableIncome = Math.max(0, grossIncome - STANDARD_DEDUCTION);
     let tax = 0;
     let prevLimit = 0;
-    
     for (const bracket of FED_BRACKETS) {
       if (taxableIncome > prevLimit) {
         const taxableInThisBracket = Math.min(taxableIncome - prevLimit, bracket.limit - prevLimit);
@@ -108,33 +108,32 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
     return tax;
   };
 
-  const currentGross = parseFloat(inputValue) || 0;
-  
+  const currentValue = parseFloat(inputValue) || 0;
+
   const taxBreakdown = useMemo(() => {
-    if (period !== 'yearly' || currentGross <= 0 || !selectedState) return null;
-    
-    const fedTax = calculateFederalTax(currentGross);
+    if (grossNet !== 'gross' || currentValue <= 0 || !selectedState) return null;
+
+    const yearlyGross = period === 'monthly' ? currentValue * 12 : currentValue;
+    const fedTax = calculateFederalTax(yearlyGross);
     const stateTaxRate = STATE_TAX_RATES[selectedState]?.rate || 0;
-    const stateTax = currentGross * stateTaxRate;
+    const stateTax = yearlyGross * stateTaxRate;
     const totalTax = fedTax + stateTax;
-    const netYearly = currentGross - totalTax;
-    
+    const netYearly = yearlyGross - totalTax;
+
     return {
-      gross: currentGross,
+      gross: yearlyGross,
       fedTax,
       stateTax,
       totalTax,
       netYearly,
       netMonthly: netYearly / 12
     };
-  }, [currentGross, period, selectedState]);
+  }, [currentValue, period, selectedState, grossNet]);
 
   const baseMonthlyIncome = useMemo(() => {
-    if (period === 'yearly' && taxBreakdown) {
-      return taxBreakdown.netMonthly;
-    }
-    return currentGross;
-  }, [period, taxBreakdown, currentGross]);
+    if (grossNet === 'gross' && taxBreakdown) return taxBreakdown.netMonthly;
+    return period === 'yearly' ? currentValue / 12 : currentValue;
+  }, [grossNet, period, taxBreakdown, currentValue]);
 
   const frequencyAmount = useMemo(() => {
     if (baseMonthlyIncome <= 0) return 0;
@@ -146,27 +145,34 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
     e.preventDefault();
     setError('');
 
-    if (currentGross <= 0) {
+    if (currentValue <= 0) {
       setError(t('income.positive_error'));
       return;
     }
 
-    if (period === 'yearly' && !selectedState) {
+    if (grossNet === 'gross' && !selectedState) {
       setError(t('income.state_error'));
       return;
     }
 
-    const submittedAmount = period === 'yearly' && taxBreakdown 
-      ? taxBreakdown.netYearly 
-      : currentGross;
-
-    onSetIncome(submittedAmount, period);
+    if (grossNet === 'gross' && taxBreakdown) {
+      onSetIncome(taxBreakdown.netYearly, 'yearly');
+    } else {
+      onSetIncome(currentValue, period);
+    }
   };
 
   const handlePeriodToggle = (newPeriod) => {
     setPeriod(newPeriod);
     setInputValue('');
     setError('');
+  };
+
+  const handleGrossNetToggle = (newGrossNet) => {
+    setGrossNet(newGrossNet);
+    setInputValue('');
+    setError('');
+    if (newGrossNet === 'net') setSelectedState('');
   };
 
   const formatCurrency = (amount) => {
@@ -191,25 +197,48 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="flex bg-muted p-1 rounded-lg w-fit">
-              <Button
-                type="button"
-                variant={period === 'monthly' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => handlePeriodToggle('monthly')}
-                className="w-24 transition-all duration-200 rounded-md"
-              >
-                {t('income.monthly')}
-              </Button>
-              <Button
-                type="button"
-                variant={period === 'yearly' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => handlePeriodToggle('yearly')}
-                className="w-24 transition-all duration-200 rounded-md"
-              >
-                {t('income.yearly')}
-              </Button>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex bg-muted p-1 rounded-lg w-fit">
+                <Button
+                  type="button"
+                  variant={period === 'monthly' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => handlePeriodToggle('monthly')}
+                  className="w-24 transition-all duration-200 rounded-md"
+                >
+                  {t('income.monthly')}
+                </Button>
+                <Button
+                  type="button"
+                  variant={period === 'yearly' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => handlePeriodToggle('yearly')}
+                  className="w-24 transition-all duration-200 rounded-md"
+                >
+                  {t('income.yearly')}
+                </Button>
+              </div>
+
+              <div className="flex bg-muted p-1 rounded-lg w-fit">
+                <Button
+                  type="button"
+                  variant={grossNet === 'net' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => handleGrossNetToggle('net')}
+                  className="w-24 transition-all duration-200 rounded-md"
+                >
+                  {t('income.net')}
+                </Button>
+                <Button
+                  type="button"
+                  variant={grossNet === 'gross' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => handleGrossNetToggle('gross')}
+                  className="w-24 transition-all duration-200 rounded-md"
+                >
+                  {t('income.gross')}
+                </Button>
+              </div>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
@@ -250,7 +279,7 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
 
               <div className="space-y-4">
                 <AnimatePresence>
-                  {period === 'yearly' && (
+                  {grossNet === 'gross' && (
                     <motion.div
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -276,7 +305,7 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
                   )}
                 </AnimatePresence>
 
-                {period === 'yearly' && currentGross > 0 && selectedState && (
+                {grossNet === 'gross' && currentValue > 0 && selectedState && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -285,7 +314,7 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
                       <Info className="h-4 w-4 text-primary" />
                       <AlertTitle className="text-sm font-semibold">Tax Rate Information</AlertTitle>
                       <AlertDescription className="text-xs text-muted-foreground mt-1">
-                        Using 2024 tax rates (for tax calculation). The state tax rate for {STATE_TAX_RATES[selectedState].name} is {(STATE_TAX_RATES[selectedState].rate * 100).toFixed(2)}%.
+                        Using 2024 tax rates. The state tax rate for {STATE_TAX_RATES[selectedState].name} is {(STATE_TAX_RATES[selectedState].rate * 100).toFixed(2)}%.
                       </AlertDescription>
                     </Alert>
                   </motion.div>
@@ -312,7 +341,7 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
             </div>
 
             {error && (
-              <motion.p 
+              <motion.p
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                 className="text-sm text-destructive mt-2"
               >
@@ -320,7 +349,7 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
               </motion.p>
             )}
 
-            {period === 'yearly' && taxBreakdown && (
+            {grossNet === 'gross' && taxBreakdown && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
@@ -331,7 +360,7 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
                     <Calculator className="w-5 h-5" />
                     <h4 className="font-semibold text-lg">{t('income.tax_breakdown')}</h4>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-3">
                       <div className="flex justify-between items-center text-sm">
@@ -383,7 +412,7 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
               </motion.div>
             )}
 
-            {period === 'monthly' && currentGross > 0 && (
+            {grossNet === 'net' && baseMonthlyIncome > 0 && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -394,13 +423,13 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
                   <span className="font-medium text-[hsl(var(--income-takehome))]">{t('income.monthly_input')}</span>
                 </div>
                 <span className="text-2xl font-bold text-[hsl(var(--income-takehome))]">
-                  ${formatCurrency(currentGross)}
+                  ${formatCurrency(baseMonthlyIncome)}
                 </span>
               </motion.div>
             )}
 
             <div className="pt-4 flex justify-end">
-              <Button 
+              <Button
                 type="submit"
                 size="lg"
                 className="w-full sm:w-auto transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] group"

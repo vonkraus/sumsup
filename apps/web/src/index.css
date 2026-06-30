@@ -133,7 +133,6 @@ html {
   .budget-features-list li {
     display: flex;
     align-items: flex-start;
-    justify-content: center;
     gap: 0.75rem;
     font-size: 1.125rem;
     line-height: 1.625;
