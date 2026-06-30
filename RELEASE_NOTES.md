@@ -3,20 +3,8 @@
 ## v2.9 / desktop v0.9.0 — 2026-06-30
 
 ### Added
-- **"Help me choose Net or Gross" link** — a quick link below the Net/Gross toggle takes you directly to the knowledge base article explaining the difference and when to use each.
-
----
-
-### Store listing blurb (for Play Store / App Store submission)
-> A new help link below the income type selector takes you straight to an article explaining the difference between net and gross income, so you can enter the right number with confidence.
-
----
-
-## v2.8 — 2026-06-30
-
-### Added
-- **Net / Gross income toggle** — choose whether you're entering your take-home (net) or pre-tax (gross) income. Select Gross to pick your state and see a full federal + state tax breakdown with your estimated net monthly amount calculated automatically.
-- Tax estimate works for both monthly and yearly gross inputs.
+- **Net / Gross income toggle** — choose whether you're entering your take-home (net) or pre-tax (gross) income. Select Gross to pick your state and see a full federal + state tax breakdown with your estimated net monthly amount calculated automatically. Works for both monthly and yearly inputs.
+- **"Help me choose Net or Gross" link** — a quick link below the toggle takes you directly to the knowledge base article explaining the difference.
 
 ### Improved
 - Income input label simplified to "Monthly Income" / "Yearly Income" — the Net/Gross toggle makes the distinction clear without cluttering the label.
@@ -25,19 +13,7 @@
 ---
 
 ### Store listing blurb (for Play Store / App Store submission)
-> You can now tell the app whether you're entering gross or net income. Select Gross, pick your state, and the app calculates your federal and state taxes and shows your estimated take-home automatically. Works for both monthly and yearly inputs.
-
----
-
-## desktop v0.8.0 — 2026-06-30
-
-### Added
-- **Net / Gross income toggle** — choose whether you're entering your take-home (net) or pre-tax (gross) income. Select Gross to pick your state and see a full federal + state tax breakdown with your estimated net monthly amount calculated automatically.
-- Tax estimate works for both monthly and yearly gross inputs.
-
-### Improved
-- Income input label simplified to "Monthly Income" / "Yearly Income" — the Net/Gross toggle makes the distinction clear without cluttering the label.
-- Feature bullet points on the home screen are now vertically aligned and centered under the heading.
+> You can now tell the app whether you're entering gross or net income. Select Gross, pick your state, and the app calculates your federal and state taxes and shows your estimated take-home automatically. A help link below the toggle explains the difference if you're not sure which to use.
 
 ---
 
