@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -197,6 +198,7 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="flex bg-muted p-1 rounded-lg w-fit">
                 <Button
@@ -239,6 +241,13 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
                   {t('income.gross')}
                 </Button>
               </div>
+            </div>
+            <Link
+              to="/blog/gross-income-vs-net-income"
+              className="text-xs text-muted-foreground hover:text-primary transition-colors"
+            >
+              Help me choose Net or Gross →
+            </Link>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
