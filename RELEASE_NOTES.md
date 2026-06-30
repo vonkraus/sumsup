@@ -1,5 +1,17 @@
 # Release Notes
 
+## v2.9 / desktop v0.9.0 — 2026-06-30
+
+### Added
+- **"Help me choose Net or Gross" link** — a quick link below the Net/Gross toggle takes you directly to the knowledge base article explaining the difference and when to use each.
+
+---
+
+### Store listing blurb (for Play Store / App Store submission)
+> A new help link below the income type selector takes you straight to an article explaining the difference between net and gross income, so you can enter the right number with confidence.
+
+---
+
 ## v2.8 — 2026-06-30
 
 ### Added
