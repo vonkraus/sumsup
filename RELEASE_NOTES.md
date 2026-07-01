@@ -1,5 +1,23 @@
 # Release Notes
 
+## v3.0 / desktop v1.0.0 — 2026-07-01
+
+### Fixed
+- **Paycheck frequency now actually affects your budget.** Previously, the frequency dropdown (Weekly, Bi-weekly, etc.) was purely informational — the amount you typed was always treated as a full month's or year's income regardless of which frequency was selected. Now every frequency (weekly, bi-weekly, semi-monthly, monthly, quarterly, annually) correctly converts your entered amount into the right monthly and annual figures.
+
+### Improved
+- **Paycheck Frequency now comes before Income Amount**, and the amount field's label updates to match your selection (e.g. "Weekly Income", "Quarterly Income").
+- Removed the separate Monthly/Yearly toggle — now redundant since Monthly and Annually are both frequency options.
+- Replaced the old "Estimated Paycheck" readout with a clearer Monthly/Annual Equivalent summary.
+- "Add Custom Category" moved to the top of the Budget Categories card as a toggle button, so it's visible without scrolling past your whole category list.
+
+---
+
+### Store listing blurb (for Play Store / App Store submission)
+> Paycheck frequency now actually drives your budget math — pick Weekly, Bi-weekly, Semi-monthly, Monthly, Quarterly, or Annually and we'll convert it correctly. Adding a custom category is also quicker to find, right at the top of your categories list.
+
+---
+
 ## v2.9 / desktop v0.9.0 — 2026-06-30
 
 ### Added
