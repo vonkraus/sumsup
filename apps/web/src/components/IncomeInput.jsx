@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { DollarSign, CalendarDays, Calculator, ArrowRight, Wallet, Info } from 'lucide-react';
+import { DollarSign, Calculator, ArrowRight, Wallet, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -75,19 +75,22 @@ const FED_BRACKETS = [
 
 const STANDARD_DEDUCTION = 14600;
 
+// periodsPerYear: how many times per year this frequency pays out — the single
+// source of truth for converting an entered amount to a monthly/annual figure.
 const FREQUENCY_OPTIONS = [
-  { value: 'weekly', labelKey: 'freq.weekly', factor: 1 / 4.33 },
-  { value: 'bi-weekly', labelKey: 'freq.bi-weekly', factor: 1 / 2.167 },
-  { value: 'semi-monthly', labelKey: 'freq.semi-monthly', factor: 1 / 2 },
-  { value: 'monthly', labelKey: 'freq.monthly', factor: 1 },
-  { value: 'quarterly', labelKey: 'freq.quarterly', factor: 3 },
-  { value: 'annually', labelKey: 'freq.annually', factor: 12 }
+  { value: 'weekly', labelKey: 'freq.weekly', amountLabelKey: 'income.amount.weekly', periodsPerYear: 52 },
+  { value: 'bi-weekly', labelKey: 'freq.bi-weekly', amountLabelKey: 'income.amount.bi-weekly', periodsPerYear: 26 },
+  { value: 'semi-monthly', labelKey: 'freq.semi-monthly', amountLabelKey: 'income.amount.semi-monthly', periodsPerYear: 24 },
+  { value: 'monthly', labelKey: 'freq.monthly', amountLabelKey: 'income.gross.monthly', periodsPerYear: 12 },
+  { value: 'quarterly', labelKey: 'freq.quarterly', amountLabelKey: 'income.amount.quarterly', periodsPerYear: 4 },
+  { value: 'annually', labelKey: 'freq.annually', amountLabelKey: 'income.gross.yearly', periodsPerYear: 1 }
 ];
 
-function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
+const getPeriodsPerYear = (freq) => FREQUENCY_OPTIONS.find(opt => opt.value === freq)?.periodsPerYear || 12;
+
+function IncomeInput({ income, onSetIncome }) {
   const { t } = useLanguage();
   const [inputValue, setInputValue] = useState(income > 0 ? String(income) : '');
-  const [period, setPeriod] = useState(incomePeriod || 'monthly');
   const [grossNet, setGrossNet] = useState('net');
   const [selectedState, setSelectedState] = useState('');
   const [payFrequency, setPayFrequency] = useState('monthly');
@@ -114,7 +117,7 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
   const taxBreakdown = useMemo(() => {
     if (grossNet !== 'gross' || currentValue <= 0 || !selectedState) return null;
 
-    const yearlyGross = period === 'monthly' ? currentValue * 12 : currentValue;
+    const yearlyGross = currentValue * getPeriodsPerYear(payFrequency);
     const fedTax = calculateFederalTax(yearlyGross);
     const stateTaxRate = STATE_TAX_RATES[selectedState]?.rate || 0;
     const stateTax = yearlyGross * stateTaxRate;
@@ -129,18 +132,12 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
       netYearly,
       netMonthly: netYearly / 12
     };
-  }, [currentValue, period, selectedState, grossNet]);
+  }, [currentValue, payFrequency, selectedState, grossNet]);
 
   const baseMonthlyIncome = useMemo(() => {
     if (grossNet === 'gross' && taxBreakdown) return taxBreakdown.netMonthly;
-    return period === 'yearly' ? currentValue / 12 : currentValue;
-  }, [grossNet, period, taxBreakdown, currentValue]);
-
-  const frequencyAmount = useMemo(() => {
-    if (baseMonthlyIncome <= 0) return 0;
-    const option = FREQUENCY_OPTIONS.find(opt => opt.value === payFrequency);
-    return baseMonthlyIncome * (option?.factor || 1);
-  }, [baseMonthlyIncome, payFrequency]);
+    return (currentValue * getPeriodsPerYear(payFrequency)) / 12;
+  }, [grossNet, payFrequency, taxBreakdown, currentValue]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -159,14 +156,8 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
     if (grossNet === 'gross' && taxBreakdown) {
       onSetIncome(taxBreakdown.netYearly, 'yearly');
     } else {
-      onSetIncome(currentValue, period);
+      onSetIncome(baseMonthlyIncome, 'monthly');
     }
-  };
-
-  const handlePeriodToggle = (newPeriod) => {
-    setPeriod(newPeriod);
-    setInputValue('');
-    setError('');
   };
 
   const handleGrossNetToggle = (newGrossNet) => {
@@ -203,27 +194,6 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
               <div className="flex bg-muted p-1 rounded-lg w-fit">
                 <Button
                   type="button"
-                  variant={period === 'monthly' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => handlePeriodToggle('monthly')}
-                  className="w-24 transition-all duration-200 rounded-md"
-                >
-                  {t('income.monthly')}
-                </Button>
-                <Button
-                  type="button"
-                  variant={period === 'yearly' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => handlePeriodToggle('yearly')}
-                  className="w-24 transition-all duration-200 rounded-md"
-                >
-                  {t('income.yearly')}
-                </Button>
-              </div>
-
-              <div className="flex bg-muted p-1 rounded-lg w-fit">
-                <Button
-                  type="button"
                   variant={grossNet === 'net' ? 'default' : 'ghost'}
                   size="sm"
                   onClick={() => handleGrossNetToggle('net')}
@@ -253,21 +223,6 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-4">
                 <div className="space-y-3">
-                  <Label htmlFor="income" className="block text-sm font-medium">
-                    {period === 'monthly' ? t('income.gross.monthly') : t('income.gross.yearly')}
-                  </Label>
-                  <Input
-                    id="income"
-                    type="number"
-                    step="0.01"
-                    placeholder={t('income.placeholder')}
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    className="text-foreground placeholder:text-muted-foreground h-11"
-                  />
-                </div>
-
-                <div className="space-y-3">
                   <Label htmlFor="frequency-select" className="block text-sm font-medium">
                     {t('income.freq')}
                   </Label>
@@ -283,6 +238,21 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
                       ))}
                     </SelectContent>
                   </Select>
+                </div>
+
+                <div className="space-y-3">
+                  <Label htmlFor="income" className="block text-sm font-medium">
+                    {t(FREQUENCY_OPTIONS.find(opt => opt.value === payFrequency)?.amountLabelKey || 'income.gross.monthly')}
+                  </Label>
+                  <Input
+                    id="income"
+                    type="number"
+                    step="0.01"
+                    placeholder={t('income.placeholder')}
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    className="text-foreground placeholder:text-muted-foreground h-11"
+                  />
                 </div>
               </div>
 
@@ -336,13 +306,23 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
                     className="p-4 rounded-lg bg-accent/10 border border-accent/20 flex items-start gap-3"
                   >
                     <Wallet className="h-5 w-5 text-accent mt-0.5 shrink-0" />
-                    <div>
-                      <p className="text-sm font-medium text-accent-foreground/80">
-                        {t('income.est_paycheck')}
-                      </p>
-                      <p className="text-lg font-bold text-accent-foreground">
-                        ${formatCurrency(frequencyAmount)} <span className="text-sm font-normal opacity-80">{t('income.per')} {t(`freq.${payFrequency}`)} {t('income.paycheck')}</span>
-                      </p>
+                    <div className="space-y-1">
+                      <div>
+                        <p className="text-sm font-medium text-accent-foreground/80">
+                          {t('income.equiv_monthly')}
+                        </p>
+                        <p className="text-lg font-bold text-accent-foreground">
+                          ${formatCurrency(baseMonthlyIncome)}
+                        </p>
+                      </div>
+                      <div className="pt-1">
+                        <p className="text-xs font-medium text-accent-foreground/70">
+                          {t('income.equiv_annual')}
+                        </p>
+                        <p className="text-sm font-semibold text-accent-foreground/90">
+                          ${formatCurrency(baseMonthlyIncome * 12)}
+                        </p>
+                      </div>
                     </div>
                   </motion.div>
                 )}
@@ -418,22 +398,6 @@ function IncomeInput({ income, incomePeriod = 'monthly', onSetIncome }) {
                     </div>
                   </div>
                 </div>
-              </motion.div>
-            )}
-
-            {grossNet === 'net' && baseMonthlyIncome > 0 && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="mt-4 p-4 rounded-lg bg-[hsl(var(--income-takehome))]/10 border border-[hsl(var(--income-takehome))]/20 flex items-center justify-between"
-              >
-                <div className="flex items-center gap-3">
-                  <CalendarDays className="h-5 w-5 text-[hsl(var(--income-takehome))]" />
-                  <span className="font-medium text-[hsl(var(--income-takehome))]">{t('income.monthly_input')}</span>
-                </div>
-                <span className="text-2xl font-bold text-[hsl(var(--income-takehome))]">
-                  ${formatCurrency(baseMonthlyIncome)}
-                </span>
               </motion.div>
             )}
 

@@ -16,7 +16,7 @@ import FileImporter from '@/components/FileImporter.jsx';
 import ImportPreview from '@/components/ImportPreview.jsx';
 import ResourceCard from '@/components/ResourceCard.jsx';
 import { Monitor, Laptop, Smartphone, Tablet, Calculator, List, Plus, DownloadCloud, ArrowRight, BookOpen } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import GoogleAd from '@/components/GoogleAd.jsx';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx';
@@ -88,6 +88,7 @@ function BudgetCalculator() {
     toast.success(`Loaded "${snapshot.spreadsheetName || snapshot.monthKey}"`);
   };
 
+  const [showAddCategory, setShowAddCategory] = useState(false);
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isImportPreviewOpen, setIsImportPreviewOpen] = useState(false);
   const [pendingImportData, setPendingImportData] = useState(null);
@@ -270,10 +271,9 @@ function BudgetCalculator() {
               onDeleted={() => setSnapshots(getAllSnapshots())}
             />
 
-            <IncomeInput 
-              income={income} 
-              incomePeriod={incomePeriod} 
-              onSetIncome={handleSetIncome} 
+            <IncomeInput
+              income={income}
+              onSetIncome={handleSetIncome}
             />
 
             {(income > 0 || categories.some(c => c.amount > 0)) && (
@@ -291,31 +291,52 @@ function BudgetCalculator() {
             >
               <Card className="shadow-lg bg-card border-border/60">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <List className="h-5 w-5 text-secondary" />
-                    {t('category.title')}
-                  </CardTitle>
-                  <CardDescription>
-                    {t('category.desc')}
-                  </CardDescription>
+                  <div className="flex items-start justify-between gap-4 flex-wrap">
+                    <div>
+                      <CardTitle className="flex items-center gap-2">
+                        <List className="h-5 w-5 text-secondary" />
+                        {t('category.title')}
+                      </CardTitle>
+                      <CardDescription>
+                        {t('category.desc')}
+                      </CardDescription>
+                    </div>
+                    <Button
+                      type="button"
+                      variant={showAddCategory ? 'secondary' : 'outline'}
+                      size="sm"
+                      onClick={() => setShowAddCategory(v => !v)}
+                      className="shrink-0"
+                    >
+                      <Plus className="h-4 w-4 mr-1.5" />
+                      {t('category.add_custom')}
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <CategoryList 
-                    categories={categories} 
+                  <AnimatePresence>
+                    {showAddCategory && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="rounded-lg border border-border/60 bg-muted/30 p-4">
+                          <AddCategoryForm onAddCategory={handleAddCategory} />
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  <CategoryList
+                    categories={categories}
                     onDeleteCategory={handleDeleteCategory}
                     onUpdateCategoryAmount={handleUpdateCategoryAmount}
                     onUpdateCategoryName={handleUpdateCategoryName}
                     onUpdateBillingPeriod={handleUpdateBillingPeriod}
                     onMoveCategory={handleMoveCategory}
                   />
-                  
-                  <div className="pt-8 mt-4 border-t border-border/60">
-                    <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-card-foreground">
-                      <Plus className="h-4 w-4 text-secondary" />
-                      {t('category.add_custom')}
-                    </h3>
-                    <AddCategoryForm onAddCategory={handleAddCategory} />
-                  </div>
                 </CardContent>
               </Card>
             </motion.div>
