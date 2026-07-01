@@ -15,7 +15,7 @@ import JsonExporter from '@/components/JsonExporter.jsx';
 import FileImporter from '@/components/FileImporter.jsx';
 import ImportPreview from '@/components/ImportPreview.jsx';
 import ResourceCard from '@/components/ResourceCard.jsx';
-import { Monitor, Laptop, Smartphone, Tablet, Calculator, List, Plus, DownloadCloud, ArrowRight, BookOpen } from 'lucide-react';
+import { Monitor, Laptop, Smartphone, Tablet, Calculator, List, Plus, Minus, DownloadCloud, ArrowRight, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import GoogleAd from '@/components/GoogleAd.jsx';
@@ -306,9 +306,14 @@ function BudgetCalculator() {
                       variant={showAddCategory ? 'secondary' : 'outline'}
                       size="sm"
                       onClick={() => setShowAddCategory(v => !v)}
+                      aria-expanded={showAddCategory}
                       className="shrink-0"
                     >
-                      <Plus className="h-4 w-4 mr-1.5" />
+                      {showAddCategory ? (
+                        <Minus className="h-4 w-4 mr-1.5" />
+                      ) : (
+                        <Plus className="h-4 w-4 mr-1.5" />
+                      )}
                       {t('category.add_custom')}
                     </Button>
                   </div>
