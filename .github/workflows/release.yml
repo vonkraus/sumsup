@@ -18,7 +18,7 @@ jobs:
     # See scripts/check-platform-leaks.sh and commit 92de9f9 (Apple 2.3.10 rejection fix).
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Run check
         run: npm run check:platform-leaks
 
@@ -47,7 +47,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup Node
         uses: actions/setup-node@v4
