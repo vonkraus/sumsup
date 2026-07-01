@@ -79,6 +79,12 @@ fastlane/readme.md
 # Version control
 vcs.xml
 
+# Per-machine IDE state (which emulator/device is selected) - not meaningful to share
+.idea/deploymentTargetSelector.xml
+
+# Stray nested IDE project folder (only the root .idea/ should exist)
+app/.idea/
+
 # lint
 lint/intermediates/
 lint/generated/
