@@ -15,7 +15,7 @@ import JsonExporter from '@/components/JsonExporter.jsx';
 import FileImporter from '@/components/FileImporter.jsx';
 import ImportPreview from '@/components/ImportPreview.jsx';
 import ResourceCard from '@/components/ResourceCard.jsx';
-import { Monitor, Laptop, Smartphone, Tablet, Calculator, List, Plus, Minus, DownloadCloud, ArrowRight, BookOpen } from 'lucide-react';
+import { Monitor, Laptop, Terminal, Smartphone, Tablet, Calculator, List, Plus, Minus, DownloadCloud, ArrowRight, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import GoogleAd from '@/components/GoogleAd.jsx';
@@ -448,6 +448,7 @@ function BudgetCalculator() {
                         <a href={DOWNLOAD_URLS.windows} className="group flex flex-col items-center gap-2 p-4 rounded-2xl border border-border/60 bg-card hover:border-primary/50 hover:shadow-md transition-all duration-200 w-24" title="Windows"><Monitor className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors" /><span className="text-xs text-muted-foreground group-hover:text-foreground transition-colors">Windows</span></a>
                         <a href={DOWNLOAD_URLS.macArm} className="group flex flex-col items-center gap-2 p-4 rounded-2xl border border-border/60 bg-card hover:border-primary/50 hover:shadow-md transition-all duration-200 w-24" title="Mac M1+"><Laptop className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors" /><span className="text-xs text-muted-foreground group-hover:text-foreground transition-colors">Mac (M1+)</span></a>
                         <a href={DOWNLOAD_URLS.macX64} className="group flex flex-col items-center gap-2 p-4 rounded-2xl border border-border/60 bg-card hover:border-primary/50 hover:shadow-md transition-all duration-200 w-24" title="Mac Intel"><Laptop className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors" /><span className="text-xs text-muted-foreground group-hover:text-foreground transition-colors">Mac (Intel)</span></a>
+                        <a href={DOWNLOAD_URLS.linux} target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-2 p-4 rounded-2xl border border-border/60 bg-card hover:border-primary/50 hover:shadow-md transition-all duration-200 w-24" title="Linux"><Terminal className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors" /><span className="text-xs text-muted-foreground group-hover:text-foreground transition-colors">Linux</span></a>
                       </div>
                     </div>
                     <div className="space-y-3">
